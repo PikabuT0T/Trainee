@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "203051387443",
+    "project_id": "traine-11a25",
+    "storage_bucket": "traine-11a25.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:203051387443:android:3aeb15d013306cdfa07146",
+        "android_client_info": {
+          "package_name": "com.example.traine"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDg2uWcROtTvPj0LDIP9D0L_AwXXxLGK9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
