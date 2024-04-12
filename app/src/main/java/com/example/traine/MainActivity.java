@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnUserProfile = findViewById(R.id.userButton);
+        btnUserProfile = findViewById(R.id.profileImage);
 
         btnUserProfile.setOnClickListener(new View.OnClickListener() {
             @Override

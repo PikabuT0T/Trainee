@@ -1,119 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
 
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#474747"
-    tools:contexts=".MainActivity">
+    android:background="#546b99"
+    tools:contexts=".MainActivity"
+    >
+
+
 
     <ImageButton
-        android:id="@+id/greenCircleButton"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/green_button_circle"
-        android:baselineAligned="false"
-        android:contentDescription="@string/greenCircleString"
-        tools:ignore="MissingConstraints"/>
-
-    <ImageButton
-        android:id="@+id/yellowCircleButton"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_above="@+id/greenCircleButton"
-        android:layout_marginStart="-40dp"
-        android:layout_marginBottom="0dp"
-        android:layout_toEndOf="@+id/greenCircleButton"
-        android:background="@drawable/yellow_button_circle"
-        android:contentDescription="@string/yellowCircleString"
-        tools:ignore="UnknownId" />
-
-    <ImageButton
-        android:id="@+id/orangeCircleButton"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignTop="@+id/greenCircleButton"
-        android:layout_alignBottom="@+id/greenCircleButton"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"
-        android:layout_toEndOf="@+id/greenCircleButton"
-        android:background="@drawable/orange_button_circle"
-        android:contentDescription="@string/orangeCircleString" />
-
-    <ImageButton
-        android:id="@+id/pinkCircleButton"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_below="@+id/greenCircleButton"
-        android:layout_marginStart="-40dp"
-        android:layout_marginTop="0dp"
-        android:layout_toEndOf="@+id/greenCircleButton"
-        android:background="@drawable/pink_button_circle"
-        android:contentDescription="@string/pinkCircleString" />
-
-    <ImageButton
-        android:id="@+id/purpleCircleButton"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignBottom="@+id/greenCircleButton"
-        android:layout_marginEnd="-40dp"
-        android:layout_marginBottom="-80dp"
-        android:layout_toStartOf="@+id/greenCircleButton"
-        android:background="@drawable/purple_button_circle"
-        android:contentDescription="@string/purpleCircleString"
+        android:id="@+id/videoButtonImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_videobutton"
+        android:layout_marginBottom="60dp"
         />
 
-    <ImageButton
-        android:id="@+id/blueCircleButton"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_above="@+id/purpleCircleButton"
-        android:layout_below="@+id/lightGreenCircleButton"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="40dp"
-        android:layout_toStartOf="@+id/greenCircleButton"
-        android:background="@drawable/blue_button_circle"
-        android:contentDescription="@string/blueCircleString" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#808da8"
+        android:gravity="center_vertical"
+        >
 
-    <ImageButton
-        android:id="@+id/lightGreenCircleButton"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignTop="@+id/greenCircleButton"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="-80dp"
-        android:layout_marginEnd="-40dp"
-        android:layout_toStartOf="@+id/greenCircleButton"
-        android:background="@drawable/light_green_button_circle"
-        android:contentDescription="@string/lightGreenCircleString"
-        />
+        <ImageButton
+            android:id="@+id/profileImage"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="#00FFFFFF"
+            app:srcCompat="@drawable/ic_profile"
+            android:layout_marginStart="10dp"/>
 
-    <ImageButton
-        android:id="@+id/userButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/user"
-        android:contentDescription="@string/userString" />
+        <Button
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:background="@android:color/transparent"
+            android:text="Ім’я користувача"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:textSize="20sp"
+            />
 
-    <ImageButton
-        android:id="@+id/userNameButton"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_toEndOf="@+id/userButton"
-        android:backgroundTint="#474747"
-        android:contentDescription="@string/userNameString"
-        app:srcCompat="@drawable/user_name" />
+    </LinearLayout>
 
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,7 @@
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/emailField"
-            android:layout_width="match_parent"
+            android:layout_width="418dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
             android:hint="Email"
