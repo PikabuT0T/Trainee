@@ -16,7 +16,7 @@
             android:name=".ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".RegistrationActivity"
+            android:name=".MenuActivity"
             android:exported="false"></activity>
         <activity
             android:name=".MainActivity"
