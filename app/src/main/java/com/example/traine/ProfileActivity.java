@@ -13,6 +13,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +37,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +47,8 @@ import Models.User;
 public class ProfileActivity extends AppCompatActivity {
 
     public static final int PICK_IMAGE = 1;
-    TextView nameView, emailView, phoneView, textTest2, textTest1;
-    Button buttonProfile;
+    TextView nameView, emailView, phoneView;
+    Button buttonProfile, buttonMain;
 
     ImageView imageView2;
 
@@ -58,9 +61,12 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseStorage storage;
 
     private Uri imageUri;
+    protected String uriString;
 
     StorageReference storageRef;
     public UploadTask uploadTask;
+
+    private RelativeLayout root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,16 +76,18 @@ public class ProfileActivity extends AppCompatActivity {
         nameView = findViewById(R.id.viewName);
         emailView = findViewById(R.id.emailView);
         phoneView = findViewById(R.id.phoneView);
-        textTest1 = findViewById(R.id.test1View);
-        textTest2 = findViewById(R.id.test2View);
         imageView2 = findViewById(R.id.imageView2);
+        root = findViewById(R.id.root_profile);
+        buttonMain = findViewById(R.id.buttonMain);
 
-//        buttonProfile.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //changeProfileImage();
-//            }
-//        });
+        buttonMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, MenuActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -96,8 +104,6 @@ public class ProfileActivity extends AppCompatActivity {
             // authenticate with your backend server, if you have one. Use
             // FirebaseUser.getIdToken() instead.
             uid = firebaseUser.getUid();
-
-            textTest2.setText(uid);
         }
 
 
@@ -130,108 +136,45 @@ public class ProfileActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance("gs://traine-11a25.appspot.com");
 
         // Create a storage reference from our app
-        storageRef = storage.getReference("images/profiles");
+        storageRef = storage.getReference("images");
 
-        // Create a child reference
-        // imagesRef now points to "images"
-        //StorageReference profilesRef = storageRef.child("profiles");
-
-        // Child references can also take paths
-        // spaceRef now points to "images/space.jpg
-        // imagesRef still points to "images"
-
-
-//        StorageReference baseProfileRef = storage.getReferenceFromUrl("https://firebasestorage.googleapis.com/v0/b/traine-11a25.appspot.com/o/image%2Fprofiles%2F2919906.png?alt=media&token=78883bd7-99ae-4f4e-a92c-93e2371f1ca3");
-//
-//        String url = "https://firebasestorage.googleapis.com/v0/b/traine-11a25.appspot.com/o/image%2Fprofiles%2F2919906.png?alt=media&token=78883bd7-99ae-4f4e-a92c-93e2371f1ca3";
-//        Picasso.get()
-//                .load(url)
-//                //.placeholder() // Изображение-заглушка
-//                //.error(R.drawable.error_image) // Обработка ошибок
-//                .into(imageView2); // Отображение в ImageView
-
-
-//        storageRef.child("image/profiles/2919906.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//            @Override
-//            public void onSuccess(Uri uri) {
-//                Picasso.get()
-//                        .load(uri)
-//                        //.placeholder() // Изображение-заглушка
-//                        //.error(R.drawable.error_image) // Обработка ошибок
-//                        .into(imageView2); // Отображение в ImageView
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//
-//            }
-//        });
-
-//        buttonProfile.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                uploadData();
-//            }
-//        });
-        // ИЗУЧИТЬ НАМЕРЕНИЯ Android Studio
         imageView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivity(intent);
+                selectImage();
             }
         });
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+            if(requestCode == PICK_IMAGE || requestCode == RESULT_OK || imageReturnedIntent != null || imageReturnedIntent.getData() != null) {
 
-        try{
-            if(requestCode == PICK_IMAGE || requestCode == RESULT_OK || data != null || data.getData() != null) {
-                imageUri = data.getData();
+                Uri selectedImage = imageReturnedIntent.getData();
+                uriString = selectedImage.toString(); //storing uri (content path)
+                StorageReference userProfile = storageRef.child("prof/"+selectedImage.getLastPathSegment());
+                imageView2.setImageURI(selectedImage);
+                uploadTask = userProfile.putFile(selectedImage);
 
-                Picasso.get()
-                        .load(imageUri)
-                        .into(imageView2);
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Snackbar.make(root, "Зображення успішно завантажене", Snackbar.LENGTH_LONG).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Snackbar.make(root, "Error: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                    }
+                });
             }
-        }catch (Exception e){
-            Toast.makeText(this, "Error"+e, Toast.LENGTH_SHORT).show();
         }
-    }
 
-    //НЕПОНЯТНО, ФОР ВОТ
-    private String getFileExt(Uri uri){
-        ContentResolver contentResolver = getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType((contentResolver.getType(uri)));
-    }
-    private void uploadData() {
-        final StorageReference reference = storageRef.child(System.currentTimeMillis()+"."+getFileExt(imageUri));
-
-        uploadTask = reference.putFile(imageUri);
-
-        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if(!task.isSuccessful()){
-                    throw task.getException();
-                }
-
-                return reference.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if(task.isSuccessful()){
-                    Uri downloadUri = task.getResult();
-
-                    //Map<String, >
-                }
-            }
-        });
+    //select from Gallery
+    void selectImage(){
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(pickPhoto , 1);
     }
 }
