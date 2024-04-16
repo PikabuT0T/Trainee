@@ -55,18 +55,20 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
     private DatabaseReference users;
-    private List<String> listData;
-
     private String uid;
     private FirebaseStorage storage;
 
     private Uri imageUri;
     protected String uriString;
-
     StorageReference storageRef;
     public UploadTask uploadTask;
 
     private RelativeLayout root;
+
+    private String customFileName = "profile_image.jpg";
+    //private String uriImage;
+
+    public User userFromProfile = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,8 @@ public class ProfileActivity extends AppCompatActivity {
         imageView2 = findViewById(R.id.imageView2);
         root = findViewById(R.id.root_profile);
         buttonMain = findViewById(R.id.buttonMain);
+
+
 
         buttonMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,10 +122,26 @@ public class ProfileActivity extends AppCompatActivity {
                 String name = dataSnapshot.child("name").getValue(String.class);
                 String email = dataSnapshot.child("email").getValue(String.class);
                 String phone = dataSnapshot.child("phone").getValue(String.class);
+                String uri = dataSnapshot.child("testProfile").getValue(String.class);
 
-                nameView.setText(name);
-                emailView.setText(email);
-                phoneView.setText(phone);
+                try{
+                    userFromProfile.setName(name);
+                    userFromProfile.setEmail(email);
+                    userFromProfile.setPhone(phone);
+                    userFromProfile.setUri(uri);
+
+                    Picasso.get()
+                            .load(userFromProfile.getUri())
+                            .placeholder(R.drawable.ic_profile)
+                            .into(imageView2);
+
+                }catch (Exception e){
+                    Snackbar.make(root, "Error: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
+
+                nameView.setText(userFromProfile.getName());
+                emailView.setText(userFromProfile.getEmail());
+                phoneView.setText(userFromProfile.getPhone());
 
                 // Обработка полученных данных
             }
@@ -150,17 +170,39 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
             if(requestCode == PICK_IMAGE || requestCode == RESULT_OK || imageReturnedIntent != null || imageReturnedIntent.getData() != null) {
+                try{
 
-                Uri selectedImage = imageReturnedIntent.getData();
-                uriString = selectedImage.toString(); //storing uri (content path)
-                StorageReference userProfile = storageRef.child("prof/"+selectedImage.getLastPathSegment());
-                imageView2.setImageURI(selectedImage);
-                uploadTask = userProfile.putFile(selectedImage);
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    uriString = selectedImage.toString(); //storing uri (content path)
+                    StorageReference userProfile = storageRef.child("prof/"+uid+"/"+customFileName);
+                    imageView2.setImageURI(selectedImage);
+                    uploadTask = userProfile.putFile(selectedImage);
+
+                    StorageReference Image = storage.getReference().child("images/prof/"+uid+"/profile_image.jpg");
+
+                    Image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String uriImage = uri.toString();
+                            userFromProfile.setUri(uriImage);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Snackbar.make(root, "Error: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                        }
+                    });
+
+                }catch (Exception e){
+                    Snackbar.make(root, "Error: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
 
                 uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Snackbar.make(root, "Зображення успішно завантажене", Snackbar.LENGTH_LONG).show();
+                        users.child("urlProfile").setValue(uriString);
+                        users.child("testProfile").setValue(userFromProfile.getUri());
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

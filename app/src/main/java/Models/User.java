@@ -1,15 +1,16 @@
 package Models;
 
 public class User {
-    private String name, email, pass, phone;
+    private String name, email, pass, phone, uri;
 
     public User() {}
 
-    public User(String name, String email, String pass, String phone) {
+    public User(String name, String email, String pass, String phone, String uri) {
         this.name = name;
         this.email = email;
         this.pass = pass;
         this.phone = phone;
+        this.uri = uri;
     }
 
     public String getName() {
@@ -42,5 +43,13 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }
