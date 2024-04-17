@@ -4,6 +4,7 @@ package com.example.traine;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -34,6 +36,8 @@ import Models.User;
 public class MenuActivity extends AppCompatActivity {
 
     String name, email, phone, uri;
+    public static String testName, testEmail, testPhone, testUri;
+
 
     ImageButton btnUserProfile;
     Button userName;
@@ -46,7 +50,7 @@ public class MenuActivity extends AppCompatActivity {
     private FirebaseDatabase db;
     private DatabaseReference users;
 
-    private User user = new User();
+    public static User user = new User();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,14 +78,6 @@ public class MenuActivity extends AppCompatActivity {
         db = FirebaseDatabase.getInstance("https://traine-11a25-default-rtdb.europe-west1.firebasedatabase.app/");
         users = db.getReference("Users").child(uid);
 
-        btnUserProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this, ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-
         users.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -99,9 +95,14 @@ public class MenuActivity extends AppCompatActivity {
                 user.setPhone(phone);
                 user.setUri(uri);
 
+                testName = user.getName();
+                testEmail = user.getEmail();
+                testPhone = user.getPhone();
+                testUri = user.getUri();
+
                 try {
                     Picasso.get()
-                            .load(user.getUri())
+                            .load(testUri)
                             .placeholder(R.drawable.ic_profile)
                             .into(btnUserProfile);
 
@@ -113,10 +114,16 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 //обработать ошибки
+                Snackbar.make(rootMenu, "Error: " + error.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
 
-
+        btnUserProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenuActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
     }
-
 }

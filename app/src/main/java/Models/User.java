@@ -1,6 +1,7 @@
 package Models;
 
 public class User {
+//    public static Object user;
     private String name, email, pass, phone, uri;
 
     public User() {}

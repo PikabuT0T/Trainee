@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="183dp"
+        android:layout_marginEnd="167dp"
         android:layout_marginBottom="646dp"
         android:text="Ваш профіль"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -100,12 +100,12 @@
 
     <Button
         android:id="@+id/buttonMain"
-        android:layout_width="wrap_content"
+        android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="312dp"
-        android:layout_marginBottom="665dp"
+        android:layout_marginEnd="257dp"
+        android:layout_marginBottom="673dp"
         android:text="Меню" />
 
 </RelativeLayout>

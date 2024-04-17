@@ -1,5 +1,10 @@
 package com.example.traine;
 
+import static com.example.traine.MenuActivity.testEmail;
+import static com.example.traine.MenuActivity.testName;
+import static com.example.traine.MenuActivity.testPhone;
+import static com.example.traine.MenuActivity.testUri;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,6 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
     //private String uriImage;
 
     public User userFromProfile = new User();
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +87,6 @@ public class ProfileActivity extends AppCompatActivity {
         imageView2 = findViewById(R.id.imageView2);
         root = findViewById(R.id.root_profile);
         buttonMain = findViewById(R.id.buttonMain);
-
 
 
         buttonMain.setOnClickListener(new View.OnClickListener() {
@@ -116,42 +121,18 @@ public class ProfileActivity extends AppCompatActivity {
 
         DatabaseReference dbReferences = db.getReference("Users");
 
-        users.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String name = dataSnapshot.child("name").getValue(String.class);
-                String email = dataSnapshot.child("email").getValue(String.class);
-                String phone = dataSnapshot.child("phone").getValue(String.class);
-                String uri = dataSnapshot.child("testProfile").getValue(String.class);
+        nameView.setText(user.getName());
+        emailView.setText(testEmail);
+        phoneView.setText(testPhone);
 
-                try{
-                    userFromProfile.setName(name);
-                    userFromProfile.setEmail(email);
-                    userFromProfile.setPhone(phone);
-                    userFromProfile.setUri(uri);
-
-                    Picasso.get()
-                            .load(userFromProfile.getUri())
-                            .placeholder(R.drawable.ic_profile)
-                            .into(imageView2);
-
-                }catch (Exception e){
-                    Snackbar.make(root, "Error: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
-                }
-
-                nameView.setText(userFromProfile.getName());
-                emailView.setText(userFromProfile.getEmail());
-                phoneView.setText(userFromProfile.getPhone());
-
-                // Обработка полученных данных
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Обработка ошибок
-                //textTest2.setText("Ошибка чтения данных: " + databaseError.getCode());
-            }
-        });
+        try {
+            Picasso.get()
+                    .load(testUri)
+                    .placeholder(R.drawable.ic_profile)
+                    .into(imageView2);
+        }catch (Exception e){
+            Snackbar.make(root, "Error: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+        }
 
         storage = FirebaseStorage.getInstance("gs://traine-11a25.appspot.com");
 
@@ -201,7 +182,7 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Snackbar.make(root, "Зображення успішно завантажене", Snackbar.LENGTH_LONG).show();
-                        users.child("urlProfile").setValue(uriString);
+//                        users.child("urlProfile").setValue(uriString);
                         users.child("testProfile").setValue(userFromProfile.getUri());
                     }
                 }).addOnFailureListener(new OnFailureListener() {
