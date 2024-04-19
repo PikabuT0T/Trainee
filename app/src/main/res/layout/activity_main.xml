@@ -9,36 +9,39 @@
     android:background="#546b99"
     tools:contexts=".MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linearLayout3"
+        android:layout_marginTop="0dp"
+        android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/videoButtonImage"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="109dp"
-        android:layout_marginBottom="124dp"
-        android:background="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_videobutton"
-        />
+
+        <ImageButton
+            android:id="@+id/videoButtonImage"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="500dp"
+            android:background="#00FFFFFF"
+            app:srcCompat="@drawable/ic_videobutton" />
+    </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#808da8"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
+
         <androidx.cardview.widget.CardView
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_margin="5dp"
-            app:cardCornerRadius="25dp"
-            android:backgroundTint="@color/black">
+            android:backgroundTint="@color/black"
+            app:cardCornerRadius="25dp">
 
             <ImageView
                 android:id="@+id/profileImage"
@@ -53,14 +56,14 @@
         <Button
             android:id="@+id/userName"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="48dp"
             android:background="@android:color/transparent"
             android:paddingStart="5dp"
-            android:paddingTop="5dp"
-            android:text="Ім’я користувача"
+            android:text="@string/User_name"
             android:textAlignment="textStart"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            tools:ignore="RtlSymmetry" />
 
     </LinearLayout>
 
