@@ -39,7 +39,7 @@ public class MenuActivity extends AppCompatActivity {
     public static String testName, testEmail, testPhone, testUri;
 
 
-    ImageButton btnUserProfile;
+    ImageView btnUserProfile;
     Button userName;
     private RelativeLayout rootMenu;
 
