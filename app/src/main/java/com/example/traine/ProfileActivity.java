@@ -3,15 +3,21 @@ package com.example.traine;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -48,7 +54,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     public static final int PICK_IMAGE = 1;
     TextView nameView, emailView, phoneView;
-    Button buttonProfile, buttonMain;
+    ImageButton buttonMain;
 
     ImageView imageView2;
 
@@ -71,6 +77,25 @@ public class ProfileActivity extends AppCompatActivity {
     public User userFromProfile = new User();
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = new MenuInflater(this);
+        inflater.inflate(R.menu.settings_action_menu, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.settings_menu_change) {
+            Toast.makeText(this, "sds", Toast.LENGTH_SHORT).show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
@@ -80,9 +105,10 @@ public class ProfileActivity extends AppCompatActivity {
         phoneView = findViewById(R.id.phoneView);
         imageView2 = findViewById(R.id.imageView2);
         root = findViewById(R.id.root_profile);
-        buttonMain = findViewById(R.id.buttonMain);
+        buttonMain = findViewById(R.id.buttonToMainActivity);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
-
+        setSupportActionBar(toolbar);
 
         buttonMain.setOnClickListener(new View.OnClickListener() {
             @Override

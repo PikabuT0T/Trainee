@@ -11,43 +11,65 @@
     >
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/buttonMain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Меню" />
+        android:layout_height="wrap_content"
+        android:background="#808da8">
+        
+        <ImageButton
+            android:id="@+id/buttonToMainActivity"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="5dp"
+            android:background="@android:color/transparent"
+            app:srcCompat="?attr/actionModeCloseDrawable" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="300dp"
+            android:background="#808da8"
+            android:gravity="">
+
+
+        </androidx.appcompat.widget.Toolbar>
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_marginTop="0dp"
         android:gravity="center"
         android:orientation="vertical"
-        >
+        android:background="#546b99">
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="200dp"
-            android:text="Ваш профіль" />
+            android:text="Ваш профіль"
+            android:textColor="@color/black"/>
 
         <androidx.cardview.widget.CardView
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
-            app:cardCornerRadius="65dp">
+            app:cardCornerRadius="70dp"
+            android:backgroundTint="@color/black">
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_profile" />
+                app:srcCompat="@drawable/ic_profile"
+                android:backgroundTint="@color/black"/>
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -56,6 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
+            android:textColor="@color/black"
             android:text="name" />
 
         <TextView
@@ -64,6 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
+            android:textColor="@color/black"
             android:text="email" />
 
         <TextView
@@ -72,6 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
+            android:textColor="@color/black"
             android:text="phone" />
 
         <Button
@@ -80,8 +105,9 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
-            android:text="Редагувати"
-            android:layout_marginBottom="100dp"/>
+            android:layout_marginBottom="100dp"
+            android:text="Редагувати" />
+
 
     </LinearLayout>
 

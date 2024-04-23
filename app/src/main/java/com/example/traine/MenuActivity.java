@@ -38,8 +38,10 @@ public class MenuActivity extends AppCompatActivity {
     String name, email, phone, uri;
     public static String testName, testEmail, testPhone, testUri;
 
+    ImageButton videoButtonImage;
+    Button button3;
 
-    ImageButton btnUserProfile;
+    ImageView btnUserProfile;
     Button userName;
     private RelativeLayout rootMenu;
 
@@ -48,7 +50,7 @@ public class MenuActivity extends AppCompatActivity {
     private String uid;
 
     private FirebaseDatabase db;
-    private DatabaseReference users;
+    private DatabaseReference users, test;
 
     public static User user = new User();
 
@@ -60,6 +62,8 @@ public class MenuActivity extends AppCompatActivity {
         rootMenu = findViewById(R.id.root_menu);
         btnUserProfile = findViewById(R.id.profileImage);
         userName = findViewById(R.id.userName);
+        videoButtonImage = findViewById(R.id.videoButtonImage);
+        button3 = findViewById(R.id.button3);
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
@@ -122,6 +126,22 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        videoButtonImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuActivity.this, PlaylistActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuActivity.this, ScannerActivity.class);
                 startActivity(intent);
             }
         });
