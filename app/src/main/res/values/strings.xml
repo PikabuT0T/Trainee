@@ -1,12 +1,5 @@
 <resources>
     <string name="app_name">Project</string>
-    <string name="greenCircleString">Green</string>
-    <string name="yellowCircleString">Yellow</string>
-    <string name="orangeCircleString">Orange</string>
-    <string name="pinkCircleString">Pink</string>
-    <string name="purpleCircleString">Purple</string>
-    <string name="blueCircleString">Blue</string>
-    <string name="lightGreenCircleString">Light Green</string>
     <string name="userString">User</string>
     <string name="userNameString">User Name</string>
     <string name="settings_menu_change">Редагувати</string>

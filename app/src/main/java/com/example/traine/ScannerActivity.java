@@ -50,7 +50,7 @@ public class ScannerActivity extends AppCompatActivity{
     RelativeLayout main;
     Button buttonScan;
     TextView textView2, textView5;
-    private BarcodeLookupClient barcodeLookupClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,6 @@ public class ScannerActivity extends AppCompatActivity{
         textView5 = findViewById(R.id.textView5);
         main = findViewById(R.id.main);
 
-        barcodeLookupClient = new BarcodeLookupClient();
 
         buttonScan.setOnClickListener(view -> {
             scanCode();
@@ -93,8 +92,6 @@ public class ScannerActivity extends AppCompatActivity{
 
            String barcode = result.getContents();
            textView2.setText(barcode);
-           String response = barcodeLookupClient.lookupBarcode(barcode);
-           textView5.setText(response);
 
            //https://listex.info/uk/search/?q=4820007956638&type=goods
        }
