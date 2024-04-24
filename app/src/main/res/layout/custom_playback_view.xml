@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/black">
+    >
 
-    <RelativeLayout
-        android:id="@+id/root_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/root_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
 
-    </RelativeLayout>
+<!--    </RelativeLayout>-->
 
     <LinearLayout
         android:id="@+id/toolbar"
@@ -99,12 +99,12 @@
         android:orientation="horizontal"
         android:weightSum="7">
 
-        <ImageView
-            android:id="@+id/unlock"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_baseline_lock_open"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/unlock"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:src="@drawable/ic_baseline_lock_open"/>-->
         <ImageView
             android:id="@+id/exo_rew"
             android:layout_width="30dp"
@@ -141,11 +141,11 @@
             android:layout_height="30dp"
             android:layout_weight="1"
             android:src="@drawable/ic_baseline_forward_10"/>
-        <ImageView
-            android:id="@+id/scaling"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_scrubber"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/scaling"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:src="@drawable/ic_scrubber"/>-->
     </LinearLayout>
 </RelativeLayout>

@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VideoPlayerActivity">
+    android:orientation="vertical"
+    tools:context=".PlaylistActivity">
 
-    <VideoView
-        android:id="@+id/videoView"
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/exoplayer_view"
         android:layout_width="match_parent"
-        android:layout_height="198dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        android:layout_height="match_parent"
 
-</RelativeLayout>
+        app:controller_layout_id="@layout/custom_playback_view"
+        app:hide_on_touch="true"
+        app:player_layout_id="@layout/exo_player_view"
+        app:resize_mode="fit"
+        app:shutter_background_color="#000000"
+        android:background="@color/black"
+        app:show_timeout="4000"
+        app:surface_type="surface_view"
+        app:use_controller="true" />
+    <!--app:fastforward_increment="10000"
+    app:show_backgroundcolor="#000000"
+    app:rewind_increment="10000"
+    android:background="#000000"-->
+
+</LinearLayout>
+

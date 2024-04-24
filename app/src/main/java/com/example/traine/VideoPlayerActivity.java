@@ -2,31 +2,78 @@ package com.example.traine;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.MediaController;
-import android.widget.VideoView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.PlaybackException;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
+
 
 public class VideoPlayerActivity extends AppCompatActivity {
+    PlayerView playerView;
+    SimpleExoPlayer exoPlayer;
+    String videoUri;
 
+    String videoTitle;
+    TextView title;
+    ConcatenatingMediaSource concatenatingMediaSource;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
+        playerView = findViewById(R.id.exoplayer_view);
 
-        VideoView videoView = findViewById(R.id.videoView);
+        //
+        videoTitle = getIntent().getStringExtra("video_title");
+        videoUri = getIntent().getStringExtra("video_uri");
 
-        String vPath = "https://firebasestorage.googleapis.com/v0/b/traine-11a25.appspot.com/o/video%2Fabs%2FHow%20to%20Do_%20ABDOMINAL%20CRUNCHES.mp4?alt=media&token=1e8be587-1479-4744-9ffc-b3cbc4d612b6";
+        title = findViewById(R.id.video_title);
+        title.setText(videoTitle);
 
-        Uri uriVideo = Uri.parse(vPath);
-        videoView.setVideoURI(uriVideo);
-        videoView.start();
+        playVideo();
+        //getSupportActionBar().hide();
+        // Устанавливаем флаги для полноэкранного режима
 
-        MediaController mediaController = new MediaController(this);
-        videoView.setMediaController(mediaController);
+
+
+    }
+
+    private void playVideo() {
+        Uri video = Uri.parse(videoUri);
+        exoPlayer = new SimpleExoPlayer.Builder(this).build();
+//        DefaultDataSourceFactory defaultDataSourceFactory = new DefaultDataSourceFactory(
+//                this, Util.getUserAgent(this, "app"));
+//        concatenatingMediaSource = new ConcatenatingMediaSource();
+
+        //for(int i = 0; i < m)
+        DefaultHttpDataSource.Factory dataSourceFactory = new DefaultHttpDataSource.Factory();
+        MediaItem mediaItem = MediaItem.fromUri(video);
+        MediaSource mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem);
+
+        playerView.setPlayer(exoPlayer);
+
+        playerView.setKeepScreenOn(true);
+        exoPlayer.prepare(mediaSource);
+        playError();
+    }
+
+    private void playError() {
+        exoPlayer.addListener(new Player.Listener() {
+            @Override
+            public void onPlayerError(PlaybackException error) {
+                Player.Listener.super.onPlayerError(error);
+                Toast.makeText(VideoPlayerActivity.this, "Video Playing Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+        exoPlayer.setPlayWhenReady(true);
     }
 }

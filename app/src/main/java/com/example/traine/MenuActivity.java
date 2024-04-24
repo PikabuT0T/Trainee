@@ -2,18 +2,14 @@ package com.example.traine;
 
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -24,11 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
-
-import java.security.spec.ECField;
-import java.util.concurrent.ExecutionException;
 
 import Models.User;
 
@@ -50,7 +42,7 @@ public class MenuActivity extends AppCompatActivity {
     private String uid;
 
     private FirebaseDatabase db;
-    private DatabaseReference users, test;
+    private DatabaseReference users;
 
     public static User user = new User();
 

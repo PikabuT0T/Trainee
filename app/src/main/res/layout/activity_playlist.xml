@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".PlaylistActivity">
+    android:orientation="vertical"
+    tools:context=".VideoPlayerActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -20,4 +21,4 @@
 
 <!--        app:videoId="LZ91ssQ7Mao"-->
 <!--        app:autoPlay="true" />-->
-</RelativeLayout>
+</LinearLayout>
