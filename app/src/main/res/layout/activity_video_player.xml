@@ -22,10 +22,6 @@
         app:show_timeout="4000"
         app:surface_type="surface_view"
         app:use_controller="true" />
-    <!--app:fastforward_increment="10000"
-    app:show_backgroundcolor="#000000"
-    app:rewind_increment="10000"
-    android:background="#000000"-->
 
 </LinearLayout>
 

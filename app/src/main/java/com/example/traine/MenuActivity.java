@@ -31,7 +31,7 @@ public class MenuActivity extends AppCompatActivity {
     public static String testName, testEmail, testPhone, testUri;
 
     ImageButton videoButtonImage;
-    Button button3;
+    ImageButton button3;
 
     ImageView btnUserProfile;
     Button userName;

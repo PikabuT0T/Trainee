@@ -37,18 +37,18 @@
             android:text="This is title of video"
             android:textColor="#FFFFFF"
             android:textSize="18sp"/>
-        <ImageView
-            android:id="@+id/video_list"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_baseline_playlist_play"/>
-        <ImageView
-            android:id="@+id/video_more"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_baseline_more"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/video_list"-->
+<!--            android:layout_width="48dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:src="@drawable/ic_baseline_playlist_play"/>-->
+<!--        <ImageView-->
+<!--            android:id="@+id/video_more"-->
+<!--            android:layout_width="48dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:src="@drawable/ic_baseline_more"/>-->
     </LinearLayout>
 
     <RelativeLayout
@@ -97,7 +97,7 @@
         android:layout_marginBottom="5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:weightSum="7">
+        android:weightSum="5">
 
 <!--        <ImageView-->
 <!--            android:id="@+id/unlock"-->

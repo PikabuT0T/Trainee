@@ -58,13 +58,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     ImageView imageView2;
 
-    private FirebaseAuth mAuth;
     private FirebaseDatabase db;
     private DatabaseReference users;
     private String uid;
     private FirebaseStorage storage;
 
-    private Uri imageUri;
+
     protected String uriString;
     StorageReference storageRef;
     public UploadTask uploadTask;

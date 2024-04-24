@@ -25,7 +25,6 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
     String videoTitle;
     TextView title;
-    ConcatenatingMediaSource concatenatingMediaSource;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
