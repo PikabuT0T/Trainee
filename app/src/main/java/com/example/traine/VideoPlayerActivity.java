@@ -1,7 +1,11 @@
 package com.example.traine;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +27,8 @@ public class VideoPlayerActivity extends AppCompatActivity {
     SimpleExoPlayer exoPlayer;
     String videoUri;
 
+    ImageView buttonMain;
+
     String videoTitle;
     TextView title;
     @Override
@@ -30,6 +36,14 @@ public class VideoPlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
         playerView = findViewById(R.id.exoplayer_view);
+        buttonMain = findViewById(R.id.buttonToMainActivity);
+        buttonMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(VideoPlayerActivity.this, PlaylistActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //
         videoTitle = getIntent().getStringExtra("video_title");

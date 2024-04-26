@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -21,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class PlaylistActivity extends AppCompatActivity {
     private FirebaseDatabase db;
     private DatabaseReference users, videoReference;
-
+    ImageButton buttonMain;
     public String videoUri, videoName;
 
     public RelativeLayout root;
@@ -35,7 +36,14 @@ public class PlaylistActivity extends AppCompatActivity {
 
         //VideoView videoView = findViewById(R.id.v);
         //root = findViewById(R.id.main);
-
+        buttonMain = findViewById(R.id.buttonToMainActivity);
+        buttonMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PlaylistActivity.this, MenuActivity.class);
+                startActivity(intent);
+            }
+        });
         recyclerView = findViewById(R.id.video_rv);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

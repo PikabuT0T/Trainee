@@ -1,12 +1,14 @@
 package com.example.traine;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -17,7 +19,9 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,6 +39,7 @@ import androidx.core.content.ContextCompat;
 //import com.cloudmersive.client.model.BarcodeLookupResponse;
 
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.Result;
 import com.journeyapps.barcodescanner.ScanContract;
@@ -47,9 +52,11 @@ import okhttp3.Response;
 
 public class ScannerActivity extends AppCompatActivity{
 
-    RelativeLayout main;
-    Button buttonScan;
-    TextView textView2, textView5;
+    CoordinatorLayout main;
+    FloatingActionButton buttonScan;
+    TextView textView2;
+
+    ImageButton buttonMain;
 
 
     @Override
@@ -57,10 +64,15 @@ public class ScannerActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
         buttonScan = findViewById(R.id.buttonScan);
-        textView2 = findViewById(R.id.textView2);
-        textView5 = findViewById(R.id.textView5);
         main = findViewById(R.id.main);
-
+        buttonMain = findViewById(R.id.buttonToMainActivity);
+        buttonMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ScannerActivity.this, MenuActivity.class);
+                startActivity(intent);
+            }
+        });
 
         buttonScan.setOnClickListener(view -> {
             scanCode();

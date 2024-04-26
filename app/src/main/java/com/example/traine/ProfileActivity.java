@@ -77,17 +77,16 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = new MenuInflater(this);
-        inflater.inflate(R.menu.settings_action_menu, menu);
+
+        getMenuInflater().inflate(R.menu.menu_items, menu);
         return true;
     }
 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
 
-        if (itemId == R.id.settings_menu_change) {
+        if (item.getItemId() == R.id.settings_menu_change) {
             Toast.makeText(this, "sds", Toast.LENGTH_SHORT).show();
         }
 
@@ -98,7 +97,6 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
         nameView = findViewById(R.id.viewName);
         emailView = findViewById(R.id.emailView);
         phoneView = findViewById(R.id.phoneView);

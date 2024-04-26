@@ -3,4 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_dark">#74000000</color>
+    <color name="honeybee">#fade8f</color>
+    <color name="BlueNova">#546b99</color>
+    <color name="BlueNovaLight">#808da8</color>
 </resources>

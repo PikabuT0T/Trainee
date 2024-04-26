@@ -4,4 +4,5 @@
     <string name="userNameString">User Name</string>
     <string name="settings_menu_change">Редагувати</string>
     <string name="User_name">Ім’я користувача</string>
+    <string name="androidqrcodejava">AndroidQRCodeJava</string>
 </resources>
