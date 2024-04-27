@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class PlaylistActivity extends AppCompatActivity {
     private FirebaseDatabase db;
     private DatabaseReference users, videoReference;
-    ImageButton buttonMain;
+    ImageButton buttonMain, buttonToUploadVideo;
     public String videoUri, videoName;
 
     public RelativeLayout root;
@@ -37,6 +37,7 @@ public class PlaylistActivity extends AppCompatActivity {
         //VideoView videoView = findViewById(R.id.v);
         //root = findViewById(R.id.main);
         buttonMain = findViewById(R.id.buttonToMainActivity);
+        buttonToUploadVideo = findViewById(R.id.buttonToUploadVideo);
         buttonMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,6 +45,14 @@ public class PlaylistActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        buttonToUploadVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PlaylistActivity.this, UploadVideoActivity.class);
+                startActivity(intent);
+            }
+        });
+
         recyclerView = findViewById(R.id.video_rv);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -65,7 +74,7 @@ public class PlaylistActivity extends AppCompatActivity {
                     @Override
                     protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull Member member) {
 
-                        viewHolder.setPlayerView(getApplication(), member.getVideoUri(), member.getVideoName());
+                        viewHolder.setPlayerView(getApplication(), member.getVideoUri(), member.getVideoName(), member.getVideoPreviewImage(), member.getVideoDuration());
 
                         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override

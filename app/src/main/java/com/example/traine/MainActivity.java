@@ -196,19 +196,19 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                                database.collection("Users")
-                                        .add(userMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                            @Override
-                                            public void onSuccess(DocumentReference documentReference) {
-                                                Snackbar.make(root, "Додано в Firestore Firebase!", Snackbar.LENGTH_LONG).show();
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Snackbar.make(root, "Error!", Snackbar.LENGTH_LONG).show();
-                                            }
-                                        });
+//                                database.collection("Users")
+//                                        .add(userMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                                            @Override
+//                                            public void onSuccess(DocumentReference documentReference) {
+//                                                Snackbar.make(root, "Додано в Firestore Firebase!", Snackbar.LENGTH_LONG).show();
+//                                            }
+//                                        })
+//                                        .addOnFailureListener(new OnFailureListener() {
+//                                            @Override
+//                                            public void onFailure(@NonNull Exception e) {
+//                                                Snackbar.make(root, "Error!", Snackbar.LENGTH_LONG).show();
+//                                            }
+//                                        });
                             }
                         });
             }

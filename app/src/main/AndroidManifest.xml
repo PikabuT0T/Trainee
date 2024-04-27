@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -15,6 +16,9 @@
         android:theme="@style/Theme.Traine"
         tools:targetApi="31">
         <activity
+            android:name=".UploadVideoActivity"
+            android:exported="false" />
+        <activity
             android:name=".PlaylistActivity"
             android:exported="false" />
         <activity
@@ -22,7 +26,8 @@
             android:exported="false" />
         <activity
             android:name=".VideoPlayerActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize|layoutDirection"/>
         <activity
             android:name=".ProfileActivity"
             android:exported="false" />

@@ -89,4 +89,33 @@ public class VideoPlayerActivity extends AppCompatActivity {
         });
         exoPlayer.setPlayWhenReady(true);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (exoPlayer.isPlaying()){
+            exoPlayer.stop();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        exoPlayer.setPlayWhenReady(false);
+        exoPlayer.getPlaybackState();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        exoPlayer.setPlayWhenReady(true);
+        exoPlayer.getPlaybackState();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        exoPlayer.setPlayWhenReady(true);
+        exoPlayer.getPlaybackState();
+    }
 }

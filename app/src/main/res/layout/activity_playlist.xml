@@ -31,7 +31,9 @@
             android:layout_margin="20dp"
             android:layout_alignParentEnd="true"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_upload_video" />
+            android:src="@drawable/ic_upload_video"
+            />
+<!--        android:onClick="UploadVideoActivity"-->
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView

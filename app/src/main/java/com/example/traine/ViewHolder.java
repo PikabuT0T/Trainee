@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +35,7 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.TransferListener;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -51,14 +53,28 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         thumbnail = itemView.findViewById(R.id.thumbnail);
         menu_more = itemView.findViewById(R.id.video_menu_more);
         videoNameView = itemView.findViewById(R.id.video_name);
-        videoSizeView = itemView.findViewById(R.id.video_size);
+//        videoSizeView = itemView.findViewById(R.id.video_size);
         videoDurationView = itemView.findViewById(R.id.video_duration);
 
     }
 
-    public void setPlayerView(Application application,String videoUri, String videoName){
-        TextView textView = itemView.findViewById(R.id.video_name);
-        textView.setText(videoName);
+    public void setPlayerView(Application application,String videoUri, String videoName, String videoPreviewImageUri, String videoDuration){
+        videoDurationView.setText(videoDuration);
+        videoNameView.setText(videoName);
+        //thumbnail.setImageURI(Uri.parse(videoPreviewImageUri));
+
+
+        try{
+            Uri image = Uri.parse(videoPreviewImageUri);
+            Picasso.get()
+                    .load(image)
+                    .placeholder(R.drawable.ic_profile)
+                    .resize(140, 140)
+                    .into(thumbnail);
+        }catch (Exception e){
+            //Toast.makeText(ViewHolder.this, "Error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
 
         Uri video = Uri.parse(videoUri);
         simpleExoPlayer = new SimpleExoPlayer.Builder(application).build();
@@ -67,32 +83,5 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         simpleExoPlayer.setMediaItem(mediaItem);
         simpleExoPlayer.prepare();
 
-        long durationMillis = simpleExoPlayer.getDuration();
-
-        if (durationMillis != 0){
-            videoDurationView.setText(timeConversion(durationMillis));
-        } else{
-            videoDurationView.setText("99:99");
-            Log.d("Duration", "duration error");
-        }
-    }
-
-    public String timeConversion(long value) {
-        String videoTime;
-        int duration = (int) value;
-        int hrs = duration / 3600000;
-        int mns = (duration / 60000) % 60;
-        int scs = (duration % 60000) / 1000;
-
-        if (hrs > 0) {
-            videoTime = String.format("%02d:%02d:%02d", hrs, mns, scs);
-        } else {
-            videoTime = String.format("%02d:%02d", mns, scs);
-        }
-
-        //videoTime = String.format("%02d", value);
-        videoTime= String.valueOf((int)value);
-
-        return videoTime;
     }
 }
