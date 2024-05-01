@@ -48,7 +48,8 @@
             android:textSize="26sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
-            android:text="RESULT"/>
+            android:text="RESULT"
+            android:autoLink="all"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
