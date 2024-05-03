@@ -30,6 +30,10 @@ android {
 }
 
 dependencies {
+
+    // debugImplementation because LeakCanary should only run in debug builds.
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
+
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:32.4.1')
 

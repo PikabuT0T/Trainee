@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,86 +19,154 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 public class PlaylistActivity extends AppCompatActivity {
-    private FirebaseDatabase db;
-    private DatabaseReference users, videoReference;
-    ImageButton buttonMain, buttonToUploadVideo;
-    public String videoUri, videoName;
-
-    public RelativeLayout root;
-
-    public RecyclerView recyclerView;
+    private ImageButton buttonMain, buttonToUploadVideo;
+    private RecyclerView recyclerView;
+    private DatabaseReference videoReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
+        initializeUI();
+        setupFirebase();
+    }
 
-        //VideoView videoView = findViewById(R.id.v);
-        //root = findViewById(R.id.main);
+    private void initializeUI() {
         buttonMain = findViewById(R.id.buttonToMainActivity);
         buttonToUploadVideo = findViewById(R.id.buttonToUploadVideo);
-        buttonMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PlaylistActivity.this, MenuActivity.class);
-                startActivity(intent);
-            }
-        });
-        buttonToUploadVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PlaylistActivity.this, UploadVideoActivity.class);
-                startActivity(intent);
-            }
-        });
+
+        buttonMain.setOnClickListener(view -> startActivity(new Intent(PlaylistActivity.this, MenuActivity.class)));
+        buttonToUploadVideo.setOnClickListener(view -> startActivity(new Intent(PlaylistActivity.this, UploadVideoActivity.class)));
 
         recyclerView = findViewById(R.id.video_rv);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        db = FirebaseDatabase.getInstance("https://traine-11a25-default-rtdb.europe-west1.firebasedatabase.app/");
+    }
+
+    private void setupFirebase() {
+        FirebaseDatabase db = FirebaseDatabase.getInstance("https://traine-11a25-default-rtdb.europe-west1.firebasedatabase.app/");
         videoReference = db.getReference("Video");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        setupRecyclerView();
+    }
 
-        FirebaseRecyclerOptions<Member> options =
-                new FirebaseRecyclerOptions.Builder<Member>()
-                        .setQuery(videoReference, Member.class)
-                        .build();
+    private void setupRecyclerView() {
+        FirebaseRecyclerOptions<Member> options = new FirebaseRecyclerOptions.Builder<Member>()
+                .setQuery(videoReference, Member.class)
+                .build();
 
-        FirebaseRecyclerAdapter<Member, ViewHolder> firebaseRecyclerAdapter =
-                new FirebaseRecyclerAdapter<Member, ViewHolder>(options) {
-                    @Override
-                    protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull Member member) {
+        FirebaseRecyclerAdapter<Member, ViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Member, ViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int position, @NonNull Member member) {
+                viewHolder.bindData(member);
+                viewHolder.itemView.setOnClickListener(view -> launchVideoPlayer(member));
+            }
 
-                        viewHolder.setPlayerView(getApplication(), member.getVideoUri(), member.getVideoName(), member.getVideoPreviewImage(), member.getVideoDuration());
-
-                        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                //viewHolder.setExoplayer(getApplication(), member.getVideoUri(), member.getVideoName());
-                                Intent intent = new Intent(getApplication(), VideoPlayerActivity.class);
-                                intent.putExtra("video_title", member.getVideoName());
-                                intent.putExtra("video_uri", member.getVideoUri());
-
-                                getApplication().startActivity(intent);
-                            }
-                        });
-                    }
-
-                    @NonNull
-                    @Override
-                    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_item, parent, false);
-
-                        return new ViewHolder(view);
-                    }
-                };
+            @NonNull
+            @Override
+            public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_item, parent, false);
+                return new ViewHolder(view);
+            }
+        };
 
         firebaseRecyclerAdapter.startListening();
         recyclerView.setAdapter(firebaseRecyclerAdapter);
     }
 
+    private void launchVideoPlayer(Member member) {
+        Intent intent = new Intent(PlaylistActivity.this, VideoPlayerActivity.class);
+        intent.putExtra("video_title", member.getVideoName());
+        intent.putExtra("video_uri", member.getVideoUri());
+        startActivity(intent);
+    }
 }
+
+//public class PlaylistActivity extends AppCompatActivity {
+//    private FirebaseDatabase db;
+//    private DatabaseReference users, videoReference;
+//    ImageButton buttonMain, buttonToUploadVideo;
+//    public String videoUri, videoName;
+//
+//    public RelativeLayout root;
+//
+//    public RecyclerView recyclerView;
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_playlist);
+//
+//        //VideoView videoView = findViewById(R.id.v);
+//        //root = findViewById(R.id.main);
+//        buttonMain = findViewById(R.id.buttonToMainActivity);
+//        buttonToUploadVideo = findViewById(R.id.buttonToUploadVideo);
+//        buttonMain.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(PlaylistActivity.this, MenuActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//        buttonToUploadVideo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(PlaylistActivity.this, UploadVideoActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        recyclerView = findViewById(R.id.video_rv);
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        db = FirebaseDatabase.getInstance("https://traine-11a25-default-rtdb.europe-west1.firebasedatabase.app/");
+//        videoReference = db.getReference("Video");
+//    }
+//
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//
+//        FirebaseRecyclerOptions<Member> options =
+//                new FirebaseRecyclerOptions.Builder<Member>()
+//                        .setQuery(videoReference, Member.class)
+//                        .build();
+//
+//        FirebaseRecyclerAdapter<Member, ViewHolder> firebaseRecyclerAdapter =
+//                new FirebaseRecyclerAdapter<Member, ViewHolder>(options) {
+//                    @Override
+//                    protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull Member member) {
+//
+//                        viewHolder.setPlayerView(getApplication(), member.getVideoUri(), member.getVideoName(), member.getVideoPreviewImage(), member.getVideoDuration());
+//
+//                        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                //viewHolder.setExoplayer(getApplication(), member.getVideoUri(), member.getVideoName());
+//                                Intent intent = new Intent(getApplication(), VideoPlayerActivity.class);
+//                                intent.putExtra("video_title", member.getVideoName());
+//                                intent.putExtra("video_uri", member.getVideoUri());
+//
+//                                getApplication().startActivity(intent);
+//                            }
+//                        });
+//                    }
+//
+//                    @NonNull
+//                    @Override
+//                    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_item, parent, false);
+//
+//                        return new ViewHolder(view);
+//                    }
+//                };
+//
+//        firebaseRecyclerAdapter.startListening();
+//        recyclerView.setAdapter(firebaseRecyclerAdapter);
+//    }
+//
+//}

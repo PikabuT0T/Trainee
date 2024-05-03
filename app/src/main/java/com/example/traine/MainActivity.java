@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,7 +20,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        db = FirebaseDatabase.getInstance("https://traine-11a25-default-rtdb.europe-west1.firebasedatabase.app/");
+        db = FirebaseDatabase.getInstance();
         users = db.getReference("Users");
 
         database = FirebaseFirestore.getInstance();
@@ -193,22 +191,6 @@ public class MainActivity extends AppCompatActivity {
                                                 Snackbar.make(root, "Виникли складнощі при створенні користувача!", Snackbar.LENGTH_LONG).show();
                                             }
                                         });
-
-
-
-//                                database.collection("Users")
-//                                        .add(userMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                                            @Override
-//                                            public void onSuccess(DocumentReference documentReference) {
-//                                                Snackbar.make(root, "Додано в Firestore Firebase!", Snackbar.LENGTH_LONG).show();
-//                                            }
-//                                        })
-//                                        .addOnFailureListener(new OnFailureListener() {
-//                                            @Override
-//                                            public void onFailure(@NonNull Exception e) {
-//                                                Snackbar.make(root, "Error!", Snackbar.LENGTH_LONG).show();
-//                                            }
-//                                        });
                             }
                         });
             }

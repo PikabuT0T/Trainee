@@ -47,4 +47,6 @@ public class Member {
     public void setVideoDuration(String videoDuration) {
         this.videoDuration = videoDuration;
     }
+
+
 }
