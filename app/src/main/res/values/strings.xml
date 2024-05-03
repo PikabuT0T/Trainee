@@ -5,4 +5,5 @@
     <string name="settings_menu_change">Редагувати</string>
     <string name="User_name">Ім’я користувача</string>
     <string name="androidqrcodejava">AndroidQRCodeJava</string>
+    <string name="upload">upload</string>
 </resources>

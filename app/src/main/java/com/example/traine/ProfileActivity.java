@@ -1,34 +1,25 @@
 package com.example.traine;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.MimeTypeMap;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,16 +28,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
-
-import java.io.File;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 import Models.User;
 
@@ -55,6 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
     public static final int PICK_IMAGE = 1;
     TextView nameView, emailView, phoneView;
     ImageButton buttonMain;
+
 
     ImageView imageView2;
 
@@ -86,11 +73,71 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (item.getItemId() == R.id.settings_menu_change) {
-            Toast.makeText(this, "sds", Toast.LENGTH_SHORT).show();
+
+        if (item.getItemId() == R.id.settings_email_change) {
+            showRefactorEmailWindow();
+        }
+        if (item.getItemId() == R.id.settings_name_change) {
+            showRefactorNameWindow();
+        }
+        if (item.getItemId() == R.id.settings_password_change) {
+            showRefactorPasswordWindow();
+        }
+        if (item.getItemId() == R.id.settings_phone_change) {
+            showRefactorPhoneWindow();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showRefactorEmailWindow() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Внесіть зміни");
+        dialog.setMessage("Введіть зміни в поля нижче");
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View refactor_window = inflater.inflate(R.layout.refactor_email_form, null);
+        dialog.setView(refactor_window);
+
+        MaterialEditText email = refactor_window.findViewById(R.id.emailField);
+        dialog.show();
+    }
+    private void showRefactorNameWindow() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Внесіть зміни");
+        dialog.setMessage("Введіть зміни в поля нижче");
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View refactor_window = inflater.inflate(R.layout.refactor_name_form, null);
+        dialog.setView(refactor_window);
+
+        MaterialEditText name = refactor_window.findViewById(R.id.nameField);
+        dialog.show();
+    }
+    private void showRefactorPasswordWindow() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Внесіть зміни");
+        dialog.setMessage("Введіть зміни в поля нижче");
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View refactor_window = inflater.inflate(R.layout.refactor_password_form, null);
+        dialog.setView(refactor_window);
+
+        MaterialEditText newPassword = refactor_window.findViewById(R.id.newPass);
+        MaterialEditText secondPassword = refactor_window.findViewById(R.id.secondPass);
+        dialog.show();
+    }
+    private void showRefactorPhoneWindow() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Внесіть зміни");
+        dialog.setMessage("Введіть зміни в поля нижче");
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View refactor_window = inflater.inflate(R.layout.refactor_phone_form, null);
+        dialog.setView(refactor_window);
+
+        MaterialEditText phone = refactor_window.findViewById(R.id.phoneField);
+        dialog.show();
     }
 
     @Override
@@ -189,7 +236,10 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+
     }
+
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);

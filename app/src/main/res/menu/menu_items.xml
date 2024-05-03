@@ -4,12 +4,23 @@
 
     <item app:showAsAction="always"
         android:title=" "
-        android:icon="@drawable/ic_more">
+        android:icon="@drawable/baseline_edit">
         <menu>
             <item
-                android:id="@+id/settings_menu_change"
-                android:icon="@drawable/baseline_edit"
-                android:title="@string/settings_menu_change"
+                android:id="@+id/settings_email_change"
+                android:title="Змінити Е-mail"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/settings_name_change"
+                android:title="Змінити ім'я"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/settings_password_change"
+                android:title="Змінити пароль"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/settings_phone_change"
+                android:title="Змінити номер телефону"
                 app:showAsAction="never" />
 
         </menu>

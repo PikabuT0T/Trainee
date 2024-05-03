@@ -3,76 +3,114 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    android:orientation="vertical">
-    
-    <VideoView
-        android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:id="@+id/videoview_upload"
-        android:backgroundTint="@color/black"/>
+    android:orientation="vertical"
+    android:background="@color/BlueNova">
 
-    <EditText
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Video name"
-        android:textSize="20sp"
-        android:id="@+id/upload_videoname"
+        android:layout_height="60dp"
+        android:background="#808da8"
+        >
+
+        <ImageButton
+            android:id="@+id/buttonToMainActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_back_menu" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:backgroundTint="@color/light_dark"
-        android:textColor="@color/black"
-        android:autoText="true"/>
-    
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choose video"
-        android:clickable="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:id="@+id/choose_video_and_upload"/>
-    <!--        android:onClick="ChooseVideo"-->
+        android:orientation="vertical"
+        android:background="@color/BlueNova">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Show video"
-        android:clickable="true"
-        android:id="@+id/show_video_playlist"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"/>
-<!--    android:onClick="ShowVideo"-->
+        <VideoView
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:id="@+id/videoview_upload"
+            android:backgroundTint="@color/black"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test"
-        android:clickable="true"
-        android:id="@+id/testShow"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Video name"
+            android:textSize="20sp"
+            android:id="@+id/upload_videoname"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/light_dark"
+            android:textColor="@color/black"
+            android:autoText="true"
+            />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_upload_video"
-        android:layout_margin="20dp"
-        android:text="upload"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose video"
+            android:clickable="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:id="@+id/choose_video_and_upload"
+            android:textColor="@color/black"/>
+        <!--        android:onClick="ChooseVideo"-->
 
-    <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:indeterminate="true"
-        android:indeterminateTint="@android:color/holo_purple"
-        android:visibility="invisible"
-        android:id="@+id/progressBar_upload"
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show video"
+            android:clickable="true"
+            android:id="@+id/show_video_playlist"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"/>
+    <!--    android:onClick="ShowVideo"-->
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:id="@+id/image_video"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test"
+            android:clickable="true"
+            android:id="@+id/testShow"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:textSize="18sp"
+            android:id="@+id/button_upload_video"
+            android:layout_margin="20dp"
+            android:background="@color/honeybee"
+            android:gravity="center"
+            android:fontFamily="@font/archivo_black"
+            android:textColor="@color/black"
+            android:text="@string/upload"
+            />
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:indeterminate="true"
+            android:indeterminateTint="@android:color/holo_purple"
+            android:visibility="invisible"
+            android:id="@+id/progressBar_upload"
+            />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:id="@+id/image_video"/>
+
+    </LinearLayout>
 
 
 </LinearLayout>

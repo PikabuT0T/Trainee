@@ -14,6 +14,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
@@ -43,9 +44,10 @@ public class UploadVideoActivity extends AppCompatActivity {
     private static final int PICK_VIDEO = 1;
     Bitmap thumbnail;
     VideoView videoView;
+    ImageButton buttonMain;
     TextView chooseVideoView, showVideoView, durationTime;
     ImageView videoImage;
-    Button buttonUpload;
+    TextView buttonUpload;
     ProgressBar progressBar;
     EditText editText;
     private Uri videoUri;
@@ -82,6 +84,14 @@ public class UploadVideoActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance("https://traine-11a25-default-rtdb.europe-west1.firebasedatabase.app");
         databaseReference = database.getReference("Video");
 
+        buttonMain = findViewById(R.id.buttonToMainActivity);
+        buttonMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UploadVideoActivity.this, PlaylistActivity.class);
+                startActivity(intent);
+            }
+        });
 
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override

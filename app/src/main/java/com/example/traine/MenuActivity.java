@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +35,7 @@ public class MenuActivity extends AppCompatActivity {
     ImageButton button3;
 
     ImageView btnUserProfile;
-    Button userName;
+    TextView userName;
     private RelativeLayout rootMenu;
 
     ProfileActivity newUser = new ProfileActivity();
