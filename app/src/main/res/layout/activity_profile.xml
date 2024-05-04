@@ -44,7 +44,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/linearLayout2"
         android:layout_marginTop="0dp"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
         android:background="#546b99">
 
@@ -52,6 +52,8 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
+            android:textSize="20sp"
             android:layout_gravity="center"
             android:text="Ваш профіль"
             android:textColor="@color/black"/>
@@ -78,7 +80,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
+            android:textSize="20sp"
             android:textColor="@color/black"
             android:text="name" />
 
@@ -88,6 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
+            android:textSize="20sp"
             android:textColor="@color/black"
             android:text="email" />
 
@@ -97,6 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
+            android:textSize="20sp"
             android:textColor="@color/black"
             android:text="phone" />
 

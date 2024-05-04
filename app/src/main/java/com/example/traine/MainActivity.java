@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,7 +31,7 @@ import Models.User;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button buttonSignUp, buttonSignIn;
+    TextView buttonSignUp, buttonSignIn;
     public FirebaseAuth mAuth;
     public FirebaseDatabase db;
     public FirebaseFirestore database;

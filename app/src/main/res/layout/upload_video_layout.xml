@@ -88,7 +88,7 @@
             android:textSize="18sp"
             android:id="@+id/button_upload_video"
             android:layout_margin="20dp"
-            android:background="@color/honeybee"
+            android:background="@drawable/round_corner"
             android:gravity="center"
             android:fontFamily="@font/archivo_black"
             android:textColor="@color/black"

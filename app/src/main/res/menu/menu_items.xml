@@ -22,7 +22,6 @@
                 android:id="@+id/settings_phone_change"
                 android:title="Змінити номер телефону"
                 app:showAsAction="never" />
-
         </menu>
 
     </item>
