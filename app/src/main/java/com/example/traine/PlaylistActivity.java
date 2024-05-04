@@ -80,6 +80,7 @@ public class PlaylistActivity extends AppCompatActivity {
 
     private void launchVideoPlayer(Member member) {
         Intent intent = new Intent(PlaylistActivity.this, VideoPlayerActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("video_title", member.getVideoName());
         intent.putExtra("video_uri", member.getVideoUri());
         startActivity(intent);

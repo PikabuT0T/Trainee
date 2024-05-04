@@ -6,4 +6,8 @@
     <string name="User_name">Ім’я користувача</string>
     <string name="androidqrcodejava">AndroidQRCodeJava</string>
     <string name="upload">upload</string>
+    <string name="scan_result">SCANNER</string>
+    <string name="qr_code_image">content</string>
+    <string name="back_to_main">back to menu</string>
+    <string name="scan_button">scan button</string>
 </resources>

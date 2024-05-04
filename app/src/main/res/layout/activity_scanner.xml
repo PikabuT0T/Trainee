@@ -7,14 +7,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ScannerActivity"
-    android:background="@color/BlueNova"
-    >
+    android:background="@color/BlueNova">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#808da8"
-        >
+        android:background="#808da8">
 
         <ImageButton
             android:id="@+id/buttonToMainActivity"
@@ -24,7 +22,8 @@
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_back_menu" />
+            android:src="@drawable/ic_back_menu"
+            android:contentDescription="@string/back_to_main"/>
 
     </RelativeLayout>
 
@@ -35,12 +34,13 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:background="@color/BlueNova">
-        
+
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ic_qr_code"/>
-        
+            android:src="@drawable/ic_qr_code"
+            android:contentDescription="@string/qr_code_image"/>
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
@@ -48,11 +48,10 @@
             android:textSize="26sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
-            android:text="RESULT"
+            android:text="@string/scan_result"
             android:autoLink="all"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottom_app_bar"
@@ -68,11 +67,10 @@
         android:id="@+id/buttonScan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/androidqrcodejava"
+        android:contentDescription="@string/scan_button"
         android:src="@drawable/ic_qr_code"
         app:backgroundTint="@color/honeybee"
         app:layout_anchor="@id/bottom_app_bar"
         app:tint="@color/black" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

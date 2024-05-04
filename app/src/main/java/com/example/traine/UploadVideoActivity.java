@@ -176,6 +176,7 @@ public class UploadVideoActivity extends AppCompatActivity {
 
     public void ShowVideo(){
         Intent intent = new Intent(UploadVideoActivity.this, PlaylistActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

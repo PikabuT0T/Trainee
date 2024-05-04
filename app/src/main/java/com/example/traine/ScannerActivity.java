@@ -50,36 +50,57 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class ScannerActivity extends AppCompatActivity{
 
-    CoordinatorLayout main;
-    FloatingActionButton buttonScan;
-    TextView textView2;
+public class ScannerActivity extends AppCompatActivity {
 
-    ImageButton buttonMain;
-
+    private CoordinatorLayout main;
+    private FloatingActionButton buttonScan;
+    private TextView textView2;
+    private ImageButton buttonMain;
+    private ActivityResultLauncher<ScanOptions> barLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
-        buttonScan = findViewById(R.id.buttonScan);
+
+        // Initialization of UI components
         main = findViewById(R.id.main);
+        textView2 = findViewById(R.id.textView2); // Ensure this ID is correct in your layout
+        buttonScan = findViewById(R.id.buttonScan);
         buttonMain = findViewById(R.id.buttonToMainActivity);
-        buttonMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ScannerActivity.this, MenuActivity.class);
-                startActivity(intent);
-            }
+
+        // Set up the main button
+        buttonMain.setOnClickListener(view -> {
+            Intent intent = new Intent(ScannerActivity.this, MenuActivity.class);
+            startActivity(intent);
         });
 
-        buttonScan.setOnClickListener(view -> {
-            scanCode();
+        // Set up the scan button
+        buttonScan.setOnClickListener(view -> scanCode());
+
+        // Initialize the ActivityResultLauncher
+        initializeBarLauncher();
+    }
+
+    private void initializeBarLauncher() {
+        barLauncher = registerForActivityResult(new ScanContract(), result -> {
+            if (result.getContents() != null) {
+                displayResultDialog(result.getContents());
+                textView2.setText(result.getContents());
+            }
         });
     }
 
-    private void scanCode(){
+    private void displayResultDialog(String scanResult) {
+        new AlertDialog.Builder(this)
+                .setTitle("Result")
+                .setMessage(scanResult)
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    private void scanCode() {
         ScanOptions options = new ScanOptions();
         options.setPrompt("Volume up to flash on");
         options.setBeepEnabled(true);
@@ -87,45 +108,82 @@ public class ScannerActivity extends AppCompatActivity{
         options.setCaptureActivity(CaptureAct.class);
         barLauncher.launch(options);
     }
-
-    ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
-       if(result.getContents() != null)
-       {
-           //можно заменить
-           AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
-           builder.setTitle("Result");
-           builder.setMessage(result.getContents());
-           builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-               @Override
-               public void onClick(DialogInterface dialogInterface, int i) {
-                   dialogInterface.dismiss();
-               }
-           }).show();
-
-           String barcode = result.getContents();
-           textView2.setText(barcode);
-
-           //https://listex.info/uk/search/?q=4820007956638&type=goods
-       }
-    });
-
-
-//    private void findByBarcode(String contents) {
-//        ApiClient defaultClient = Configuration.getDefaultApiClient();
-//        // Configure API key authorization: Apikey
-//        ApiKeyAuth Apikey = (ApiKeyAuth) defaultClient.getAuthentication("Apikey");
-//        Apikey.setApiKey("e7af652d-99ee-4dc2-be74-2980e60445b4");
-//// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-////Apikey.setApiKeyPrefix("Token");
-//
-//        BarcodeLookupApi apiInstance = new BarcodeLookupApi();
-//         // String | Barcode value
-//           try {
-//               BarcodeLookupResponse response = apiInstance.barcodeLookupEanLookup(contents);
-//               String responseText = response.toString();
-//               textView5.setText(responseText);
-//           } catch (ApiException e) {
-//               Snackbar.make(main, "Помилка авторізації!" + e.getMessage(), Snackbar.LENGTH_LONG).show();
-//           }
-//    }
 }
+//public class ScannerActivity extends AppCompatActivity{
+//
+//    CoordinatorLayout main;
+//    FloatingActionButton buttonScan;
+//    TextView textView2;
+//
+//    ImageButton buttonMain;
+//
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_scanner);
+//        main = findViewById(R.id.main);
+//        buttonMain = findViewById(R.id.buttonToMainActivity);
+//        buttonMain.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(ScannerActivity.this, MenuActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        findViewById(R.id.buttonScan).setOnClickListener(view -> {
+//            scanCode();
+//        });
+//    }
+//
+//    private void scanCode(){
+//        ScanOptions options = new ScanOptions();
+//        options.setPrompt("Volume up to flash on");
+//        options.setBeepEnabled(true);
+//        options.setOrientationLocked(true);
+//        options.setCaptureActivity(CaptureAct.class);
+//        barLauncher.launch(options);
+//    }
+//
+//    ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
+//       if(result.getContents() != null)
+//       {
+//           //можно заменить
+//           AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
+//           builder.setTitle("Result");
+//           builder.setMessage(result.getContents());
+//           builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//               @Override
+//               public void onClick(DialogInterface dialogInterface, int i) {
+//                   dialogInterface.dismiss();
+//               }
+//           }).show();
+//
+//           String barcode = result.getContents();
+//           textView2.setText(barcode);
+//
+//           //https://listex.info/uk/search/?q=4820007956638&type=goods
+//       }
+//    });
+//
+//
+////    private void findByBarcode(String contents) {
+////        ApiClient defaultClient = Configuration.getDefaultApiClient();
+////        // Configure API key authorization: Apikey
+////        ApiKeyAuth Apikey = (ApiKeyAuth) defaultClient.getAuthentication("Apikey");
+////        Apikey.setApiKey("e7af652d-99ee-4dc2-be74-2980e60445b4");
+////// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//////Apikey.setApiKeyPrefix("Token");
+////
+////        BarcodeLookupApi apiInstance = new BarcodeLookupApi();
+////         // String | Barcode value
+////           try {
+////               BarcodeLookupResponse response = apiInstance.barcodeLookupEanLookup(contents);
+////               String responseText = response.toString();
+////               textView5.setText(responseText);
+////           } catch (ApiException e) {
+////               Snackbar.make(main, "Помилка авторізації!" + e.getMessage(), Snackbar.LENGTH_LONG).show();
+////           }
+////    }
+//}
