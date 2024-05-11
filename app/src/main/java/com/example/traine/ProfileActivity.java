@@ -4,9 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -15,51 +15,41 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 
 import Models.User;
+
 public class ProfileActivity extends AppCompatActivity {
-
-    public int PICK_IMAGE = 1;
+    private ProfileViewModel viewModel;
     private TextView nameView, emailView, phoneView;
-    private ImageButton buttonMain;
     private ImageView imageView2;
-    private RelativeLayout root;
-
-    private FirebaseDatabase db;
-    private DatabaseReference users;
-    private FirebaseStorage storage;
-    private StorageReference storageRef;
+    private ImageButton buttonMain;
     private User currentUser;
-    private Task uploadTask;
-    private String uid;
-    private String customFileName = "profile_image.jpg";
-    private ValueEventListener usersEventListener; // To hold the event listener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         initViews();
+        initCurrentUser();
+
+        // Получаем ViewModel
+        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+
+        // Наблюдаем за изменениями в данных пользователя
+        viewModel.getUser().observe(this, this::updateUI);
+
+        // Устанавливаем слушатели
         setupListeners();
+    }
+
+    private void initCurrentUser() {
         currentUser = getIntent().getParcelableExtra("userDetails");
-        initFirebase();
     }
 
     private void initViews() {
@@ -67,73 +57,10 @@ public class ProfileActivity extends AppCompatActivity {
         emailView = findViewById(R.id.emailView);
         phoneView = findViewById(R.id.phoneView);
         imageView2 = findViewById(R.id.imageView2);
-        root = findViewById(R.id.root_profile);
         buttonMain = findViewById(R.id.buttonToMainActivity);
         Toolbar toolbar = findViewById(R.id.toolbar_profile);
         setSupportActionBar(toolbar);
-    }
 
-    private void initFirebase() {
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null) {
-            uid = firebaseUser.getUid();
-            db = FirebaseDatabase.getInstance();
-            users = db.getReference("Users").child(uid);
-            storage = FirebaseStorage.getInstance();
-            storageRef = storage.getReference("images");
-        }
-    }
-
-    private void updateUI(User user) {
-        nameView.setText(user.getName());
-        emailView.setText(user.getEmail());
-        phoneView.setText(user.getPhone());
-        if (user.getProfileUri() != null && !user.getProfileUri().isEmpty()) {
-            Picasso.get()
-                    .load(user.getProfileUri())
-                    .placeholder(R.drawable.ic_profile)
-                    .resize(140, 140)
-                    .into(imageView2);
-        }
-    }
-
-    private void setupListeners() {
-        buttonMain.setOnClickListener(view -> goToActivity(MenuActivity.class));
-        imageView2.setOnClickListener(view -> selectImage());
-    }
-
-    private void goToActivity(Class<?> activityClass) {
-        Intent intent = new Intent(ProfileActivity.this, activityClass);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        intent.putExtra("userDetails", currentUser);
-        startActivity(intent);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Picasso.get().invalidate(data.getData());
-            uploadImage(data.getData());
-
-        }
-    }
-
-    private void uploadImage(Uri imageUri) {
-        StorageReference userProfileRef = storageRef.child("prof/" + uid + "/" + customFileName);
-        uploadTask = userProfileRef.putFile(imageUri);
-
-        uploadTask.addOnSuccessListener(taskSnapshot -> {
-            Snackbar.make(root, "Image uploaded successfully", Snackbar.LENGTH_LONG).show();
-            userProfileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                String newUri = uri.toString();
-                users.child("profileUri").setValue(newUri);
-                currentUser.setProfileUri(newUri);
-                //Picasso.get().invalidate(currentUser.getProfileUri());
-                updateUI(currentUser);
-
-            }).addOnFailureListener(e -> Snackbar.make(root, "Error getting download URL: " + e.getMessage(), Snackbar.LENGTH_LONG).show());
-        }).addOnFailureListener(e -> Snackbar.make(root, "Upload failed: " + e.getMessage(), Snackbar.LENGTH_LONG).show());
     }
 
     @Override
@@ -200,25 +127,237 @@ public class ProfileActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private void setupListeners() {
+        buttonMain.setOnClickListener(view -> goToActivity(MenuActivity.class));
+        imageView2.setOnClickListener(view -> selectImage());
+    }
+
     private void selectImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        startActivityForResult(intent, PICK_IMAGE);
+        startActivityForResult(intent, viewModel.PICK_IMAGE);
     }
 
+    // Обработка результатов выбора изображения
     @Override
-    protected void onStart() {
-        super.onStart();
-        updateUI(currentUser);
-        //attachDatabaseReadListener(); // Reattach the listener when the activity starts
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == viewModel.PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            viewModel.uploadImage(data.getData());
+            Toast.makeText(this, "Зображення успішно завантажене!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Error: Спробуйте завантажити інше зображення!", Toast.LENGTH_LONG).show();
+        }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //detachDatabaseReadListener(); // Detach the listener when the activity stops
+    // Обновление интерфейса пользователя
+    private void updateUI(User user) {
+        nameView.setText(user.getName());
+        emailView.setText(user.getEmail());
+        phoneView.setText(user.getPhone());
+        if (user.getProfileUri() != null && !user.getProfileUri().isEmpty()) {
+            Picasso.get()
+                    .load(user.getProfileUri())
+                    .placeholder(R.drawable.ic_profile)
+                    .resize(140, 140)
+                    .into(imageView2);
+        }
+    }
+
+    private void goToActivity(Class<?> activityClass) {
+        Intent intent = new Intent(ProfileActivity.this, activityClass);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.putExtra("userDetails", currentUser);
+        startActivity(intent);
     }
 }
+
+
+//public class ProfileActivity extends AppCompatActivity {
+//
+//    public int PICK_IMAGE = 1;
+//    private TextView nameView, emailView, phoneView;
+//    private ImageButton buttonMain;
+//    private ImageView imageView2;
+//    private RelativeLayout root;
+//
+//    private FirebaseDatabase db;
+//    private DatabaseReference users;
+//    private FirebaseStorage storage;
+//    private StorageReference storageRef;
+//    private User currentUser;
+//    private Task uploadTask;
+//    private String uid;
+//    private String customFileName = "profile_image.jpg";
+//    private ValueEventListener usersEventListener; // To hold the event listener
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_profile);
+//        initViews();
+//        setupListeners();
+//        currentUser = getIntent().getParcelableExtra("userDetails");
+//        initFirebase();
+//    }
+//
+//    private void initViews() {
+//        nameView = findViewById(R.id.viewName);
+//        emailView = findViewById(R.id.emailView);
+//        phoneView = findViewById(R.id.phoneView);
+//        imageView2 = findViewById(R.id.imageView2);
+//        root = findViewById(R.id.root_profile);
+//        buttonMain = findViewById(R.id.buttonToMainActivity);
+//        Toolbar toolbar = findViewById(R.id.toolbar_profile);
+//        setSupportActionBar(toolbar);
+//    }
+//
+//    private void initFirebase() {
+//        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//        if (firebaseUser != null) {
+//            uid = firebaseUser.getUid();
+//            db = FirebaseDatabase.getInstance();
+//            users = db.getReference("Users").child(uid);
+//            storage = FirebaseStorage.getInstance();
+//            storageRef = storage.getReference("images");
+//        }
+//    }
+//
+//    private void updateUI(User user) {
+//        nameView.setText(user.getName());
+//        emailView.setText(user.getEmail());
+//        phoneView.setText(user.getPhone());
+//        if (user.getProfileUri() != null && !user.getProfileUri().isEmpty()) {
+//            Picasso.get()
+//                    .load(user.getProfileUri())
+//                    .placeholder(R.drawable.ic_profile)
+//                    .resize(140, 140)
+//                    .into(imageView2);
+//        }
+//    }
+//
+//    private void setupListeners() {
+//        buttonMain.setOnClickListener(view -> goToActivity(MenuActivity.class));
+//        imageView2.setOnClickListener(view -> selectImage());
+//    }
+//
+//    private void goToActivity(Class<?> activityClass) {
+//        Intent intent = new Intent(ProfileActivity.this, activityClass);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//        intent.putExtra("userDetails", currentUser);
+//        startActivity(intent);
+//    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+//            Picasso.get().invalidate(data.getData());
+//            uploadImage(data.getData());
+//
+//        }
+//    }
+//
+//    private void uploadImage(Uri imageUri) {
+//        StorageReference userProfileRef = storageRef.child("prof/" + uid + "/" + customFileName);
+//        uploadTask = userProfileRef.putFile(imageUri);
+//
+//        uploadTask.addOnSuccessListener(taskSnapshot -> {
+//            Snackbar.make(root, "Image uploaded successfully", Snackbar.LENGTH_LONG).show();
+//            userProfileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+//                String newUri = uri.toString();
+//                users.child("profileUri").setValue(newUri);
+//                currentUser.setProfileUri(newUri);
+//                //Picasso.get().invalidate(currentUser.getProfileUri());
+//                updateUI(currentUser);
+//
+//            }).addOnFailureListener(e -> Snackbar.make(root, "Error getting download URL: " + e.getMessage(), Snackbar.LENGTH_LONG).show());
+//        }).addOnFailureListener(e -> Snackbar.make(root, "Upload failed: " + e.getMessage(), Snackbar.LENGTH_LONG).show());
+//    }
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_items, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//
+//
+//        if (item.getItemId() == R.id.settings_email_change) {
+//            showRefactorWindow("email");
+//        }
+//        if (item.getItemId() == R.id.settings_name_change) {
+//            showRefactorWindow("name");
+//        }
+//        if (item.getItemId() == R.id.settings_password_change) {
+//            showRefactorWindow("password");
+//        }
+//        if (item.getItemId() == R.id.settings_phone_change) {
+//            showRefactorWindow("phone");
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
+//
+//    private void showRefactorWindow(String type) {
+//        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+//        dialog.setTitle("Внесіть зміни");
+//        dialog.setMessage("Введіть зміни в поля нижче");
+//
+//        LayoutInflater inflater = LayoutInflater.from(this);
+//        View refactorWindow = null;
+//        MaterialEditText inputField = null;
+//
+//        switch (type) {
+//            case "email":
+//                refactorWindow = inflater.inflate(R.layout.refactor_email_form, null);
+//                inputField = refactorWindow.findViewById(R.id.emailField);
+//                break;
+//            case "name":
+//                refactorWindow = inflater.inflate(R.layout.refactor_name_form, null);
+//                inputField = refactorWindow.findViewById(R.id.nameField);
+//                break;
+//            case "password":
+//                refactorWindow = inflater.inflate(R.layout.refactor_password_form, null);
+//                inputField = refactorWindow.findViewById(R.id.newPass);
+//                MaterialEditText secondInputField = refactorWindow.findViewById(R.id.secondPass);
+//                break;
+//            case "phone":
+//                refactorWindow = inflater.inflate(R.layout.refactor_phone_form, null);
+//                inputField = refactorWindow.findViewById(R.id.phoneField);
+//                break;
+//        }
+//
+//        dialog.setView(refactorWindow);
+//        dialog.setPositiveButton("Зберегти", (dialogInterface, i) -> {
+//            // Code to handle saving the new value
+//        });
+//        dialog.setNegativeButton("Скасувати", (dialogInterface, i) -> dialogInterface.dismiss());
+//
+//        dialog.show();
+//    }
+//
+//    private void selectImage() {
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.setType("image/*");
+//        startActivityForResult(intent, PICK_IMAGE);
+//    }
+//
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        updateUI(currentUser);
+//        //attachDatabaseReadListener(); // Reattach the listener when the activity starts
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        //detachDatabaseReadListener(); // Detach the listener when the activity stops
+//    }
+//}
 
 //public class ProfileActivity extends AppCompatActivity {
 //

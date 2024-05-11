@@ -77,11 +77,11 @@ public class UploadVideoActivity extends AppCompatActivity {
         mediaController = new MediaController(this);
 
         member = new Member();
-        storage = FirebaseStorage.getInstance("gs://traine-11a25.appspot.com");
+        storage = FirebaseStorage.getInstance();
         storageImageReference = storage.getReference("images").child("videoPreview");
         storageVideoReference = storage.getReference("video");
 
-        database = FirebaseDatabase.getInstance("https://traine-11a25-default-rtdb.europe-west1.firebasedatabase.app");
+        database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Video");
 
         buttonMain = findViewById(R.id.buttonToMainActivity);

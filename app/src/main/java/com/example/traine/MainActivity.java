@@ -1,41 +1,30 @@
 package com.example.traine;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.FirebaseFirestore;
+
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import Models.User;
-
 public class MainActivity extends AppCompatActivity {
-
     TextView buttonSignUp, buttonSignIn;
-    public FirebaseAuth mAuth;
-    public FirebaseDatabase db;
-    public DatabaseReference users;
-
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase db;
+    private DatabaseReference users;
     RelativeLayout root;
     LayoutInflater inflater; // Перевикористання inflater
 
@@ -135,6 +124,80 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
+//    registerUser(email.getText().toString(), pass.getText().toString(), name.getText().toString(), phone.getText().toString());
+//    private void registerUser(String email, String password, String name, String phone) {
+//        OkHttpClient client = new OkHttpClient();
+//        String signUpUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDg2uWcROtTvPj0LDIP9D0L_AwXXxLGK9w";
+//        String json = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\",\"returnSecureToken\":true}";
+//
+//        RequestBody signUpBody = RequestBody.create(json, MediaType.get("application/json; charset=utf-8"));
+//        Request request = new Request.Builder()
+//                .url(signUpUrl)
+//                .post(signUpBody)
+//                .build();
+//
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+//                if (response.isSuccessful()) {
+//                    final String responseData = response.body().string();
+//                    // Парсим ответ, чтобы извлечь нужные данные
+//                    String idToken = null; // ID Token пользователя
+//                    String localId = null;
+//                    try {
+//                        idToken = new JSONObject(responseData).getString("idToken");
+//                        localId = new JSONObject(responseData).getString("localId");
+//                    } catch (JSONException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                    String finalLocalId = localId;
+//                    String finalIdToken = idToken;
+//                    runOnUiThread(() -> {
+//                        saveUserData(finalLocalId, email, name, phone, finalIdToken);
+//                        //Snackbar.make(root, "Регистрация успешна: " + responseData, Snackbar.LENGTH_LONG).show();
+//                        // Сохраняем дополнительные данные пользователя в Firebase Database
+//                    });
+//                }
+//            }
+//        });
+//    }
+//
+//    private void saveUserData(String userId, String email, String name, String phone, String idToken) {
+//        OkHttpClient client = new OkHttpClient();
+//        String url = "https://traine-11a25.firebaseio.com/Users/" + userId + ".json";
+//
+//        String json = "{\"email\":\"" + email + "\", \"name\":\"" + name + "\", \"phone\":\"" + phone + "\"}";
+//
+//        RequestBody body = RequestBody.create(json, MediaType.get("application/json; charset=utf-8"));
+//        Request request = new Request.Builder()
+//                .url(url)
+//                .put(body) // Используем PUT для создания или обновления данных пользователя
+//                .build();
+//
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+////                e.printStackTrace();
+//                Snackbar.make(root, "Error:" + e, Snackbar.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+//                if (response.isSuccessful()) {
+//                    runOnUiThread(() -> Snackbar.make(root, "Данные пользователя сохранены в Firebase Database.", Snackbar.LENGTH_LONG).show());
+//                }
+//            }
+//        });
+//    }
+
+
+
+//registerUser(email.getText().toString(), pass.getText().toString(), name.getText().toString(), phone.getText().toString());
 //public class MainActivity extends AppCompatActivity {
 //
 //    TextView buttonSignUp, buttonSignIn;
