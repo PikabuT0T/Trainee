@@ -72,6 +72,12 @@
             android:layout_marginBottom="100dp"
             android:background="#00FFFFFF"
             app:srcCompat="@drawable/ic_videobutton"/>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button" />
     </RelativeLayout>
 
 

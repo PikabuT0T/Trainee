@@ -4,14 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -25,16 +28,19 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
     private DatabaseReference users;
+    private String authToken;
     RelativeLayout root;
     LayoutInflater inflater; // Перевикористання inflater
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkToken();
         setContentView(R.layout.profile_layout);
 
         buttonSignIn = findViewById(R.id.buttonSignIn);
         buttonSignUp = findViewById(R.id.buttonSignUp);
+
         root = findViewById(R.id.root_element);
         inflater = LayoutInflater.from(this); // Ініціалізація тут
 
@@ -68,6 +74,19 @@ public class MainActivity extends AppCompatActivity {
             // Вхід за поштою та паролем
             mAuth.signInWithEmailAndPassword(email.getText().toString(), pass.getText().toString())
                     .addOnSuccessListener(authResult -> {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            user.getIdToken(true).addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    authToken = task.getResult().getToken();
+                                    saveToken(authToken);
+                                    Log.d("Auth Token", "Token: " + authToken);
+                                } else {
+                                    Log.d("Auth Token Failure", "Token was not found");
+                                }
+                            });
+                        }
+
                         startActivity(new Intent(MainActivity.this, MenuActivity.class));
                         finish();
                     })
@@ -121,6 +140,27 @@ public class MainActivity extends AppCompatActivity {
                     });
         });
         dialog.show();
+    }
+
+    private void saveToken(String token) {
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences("AppPrefs", getApplication().MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("AuthToken", token);  // Шифрование токена перед сохранением рекомендуется
+        editor.apply();
+    }
+
+    private String getToken() {
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences("AppPrefs", getApplication().MODE_PRIVATE);
+        return sharedPreferences.getString("AuthToken", null);  // Дешифрование токена после получения
+    }
+
+    private void checkToken() {
+        authToken = getToken();
+        if (authToken != null) {
+            startActivity(new Intent(MainActivity.this, MenuActivity.class));
+        } else {
+            Log.d("Auth Token Failure", "Token was not found");
+        }
     }
 }
 
