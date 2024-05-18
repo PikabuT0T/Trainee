@@ -192,7 +192,7 @@ public class UploadVideoActivity extends AppCompatActivity {
 
             progressBar.setVisibility(View.VISIBLE);
             //завантажуємо "прев'ю" для відео
-            final StorageReference referenceImage = storageImageReference.child(System.currentTimeMillis() +
+            final StorageReference referenceImage = storageImageReference.child(videoName + "_" + System.currentTimeMillis() +
                     ".JPEG");
             uploadTaskImage = referenceImage.putBytes(imageData);
 

@@ -36,6 +36,47 @@
 <!--        android:onClick="UploadVideoActivity"-->
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <CheckBox
+            android:id="@+id/checkBox_legs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ноги"
+            android:checked="false" />
+
+        <CheckBox
+            android:id="@+id/checkBox_arms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Руки"
+            android:checked="false" />
+
+        <CheckBox
+            android:id="@+id/checkBox_abs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Пресс"
+            android:checked="false" />
+
+        <!-- Добавьте дополнительные CheckBox по необходимости -->
+
+        <Button
+            android:id="@+id/button_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Поиск" />
+        <Button
+            android:id="@+id/button_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Главная" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

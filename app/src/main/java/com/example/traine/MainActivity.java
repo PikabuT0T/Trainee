@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         buttonSignUp.setOnClickListener(view -> showSignUpWindow());
         buttonSignIn.setOnClickListener(view -> showSignInWindow());
     }
-
     private void showSignInWindow() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Увійти").setMessage("Введіть дані для входу");
@@ -75,13 +74,14 @@ public class MainActivity extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(email.getText().toString(), pass.getText().toString())
                     .addOnSuccessListener(authResult -> {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null) {
+                        if(user != null){
                             user.getIdToken(true).addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
+                                if(task.isSuccessful()){
                                     authToken = task.getResult().getToken();
                                     saveToken(authToken);
                                     Log.d("Auth Token", "Token: " + authToken);
-                                } else {
+                                }
+                                else{
                                     Log.d("Auth Token Failure", "Token was not found");
                                 }
                             });
@@ -154,16 +154,16 @@ public class MainActivity extends AppCompatActivity {
         return sharedPreferences.getString("AuthToken", null);  // Дешифрование токена после получения
     }
 
-    private void checkToken() {
+    private void checkToken(){
         authToken = getToken();
-        if (authToken != null) {
+        if(authToken != null){
             startActivity(new Intent(MainActivity.this, MenuActivity.class));
         } else {
             Log.d("Auth Token Failure", "Token was not found");
         }
     }
-}
 
+}
 //    registerUser(email.getText().toString(), pass.getText().toString(), name.getText().toString(), phone.getText().toString());
 //    private void registerUser(String email, String password, String name, String phone) {
 //        OkHttpClient client = new OkHttpClient();
