@@ -2,6 +2,7 @@ package com.example.traine;
 
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;

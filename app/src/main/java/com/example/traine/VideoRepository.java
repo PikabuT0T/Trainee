@@ -22,7 +22,7 @@ public class VideoRepository {
     }
 
     public Query getFilteredVideoQuery(String tag) {
-        return videoReference.orderByChild("category").equalTo(tag);
+        return videoReference.orderByChild("videoTags").equalTo(tag);
     }
 
 }

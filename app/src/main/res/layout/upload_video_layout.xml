@@ -26,90 +26,115 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="502dp"
         android:layout_margin="10dp"
-        android:orientation="vertical"
-        android:background="@color/BlueNova">
+        android:background="@color/BlueNova"
+        android:orientation="vertical">
 
         <VideoView
-            android:layout_width="match_parent"
-            android:layout_height="230dp"
             android:id="@+id/videoview_upload"
-            android:backgroundTint="@color/black"/>
+            android:layout_width="match_parent"
+            android:layout_height="196dp"
+            android:backgroundTint="@color/black" />
 
         <EditText
+            android:id="@+id/upload_videoname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Video name"
-            android:textSize="20sp"
-            android:id="@+id/upload_videoname"
             android:layout_margin="10dp"
-            android:backgroundTint="@color/light_dark"
-            android:textColor="@color/black"
             android:autoText="true"
-            />
+            android:backgroundTint="@color/light_dark"
+            android:hint="Video name"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/choose_video_and_upload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose video"
-            android:clickable="true"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:id="@+id/choose_video_and_upload"
-            android:textColor="@color/black"/>
+            android:clickable="true"
+            android:text="Choose video"
+            android:textColor="@color/black" />
         <!--        android:onClick="ChooseVideo"-->
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Show video"
-            android:clickable="true"
             android:id="@+id/show_video_playlist"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/black"/>
-    <!--    android:onClick="ShowVideo"-->
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Test"
-            android:clickable="true"
-            android:id="@+id/testShow"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:textColor="@color/black"
-            />
+            android:clickable="true"
+            android:text="Show video"
+            android:textColor="@color/black" />
+        <!--    android:onClick="ShowVideo"-->
 
         <TextView
+            android:id="@+id/testShow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:clickable="true"
+            android:text="Test"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/button_upload_video"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:textSize="18sp"
-            android:id="@+id/button_upload_video"
             android:layout_margin="20dp"
             android:background="@drawable/round_corner"
-            android:gravity="center"
             android:fontFamily="@font/archivo_black"
-            android:textColor="@color/black"
+            android:gravity="center"
             android:text="@string/upload"
-            />
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
         <ProgressBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/progressBar_upload"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
             android:indeterminate="true"
             android:indeterminateTint="@android:color/holo_purple"
-            android:visibility="invisible"
-            android:id="@+id/progressBar_upload"
-            />
+            android:visibility="invisible" />
 
         <ImageView
+            android:id="@+id/image_video"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:id="@+id/image_video"/>
+            android:layout_height="160dp" />
 
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <CheckBox
+            android:id="@+id/checkBox_legs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ноги"
+            android:checked="false" />
+
+        <CheckBox
+            android:id="@+id/checkBox_arms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Руки"
+            android:checked="false" />
+
+        <CheckBox
+            android:id="@+id/checkBox_abs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Пресс"
+            android:checked="false" />
+
+        <!-- Добавьте дополнительные CheckBox по необходимости -->
     </LinearLayout>
 
 

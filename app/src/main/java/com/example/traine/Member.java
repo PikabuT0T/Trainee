@@ -5,15 +5,17 @@ public class Member {
     String videoName;
     String videoPreviewImageUri;
     String videoDuration;
+    String videoTags;
 
     public Member() {
     }
 
-    public Member(String videoUri, String videoName, String videoDuration, String videoPreviewImageUri) {
+    public Member(String videoUri, String videoName, String videoDuration, String videoPreviewImageUri, String videoTags) {
         this.videoUri = videoUri;
         this.videoName = videoName;
         this.videoDuration = videoDuration;
         this.videoPreviewImageUri = videoPreviewImageUri;
+        this.videoTags = videoTags;
     }
 
     public String getVideoUri() {
@@ -48,5 +50,11 @@ public class Member {
         this.videoDuration = videoDuration;
     }
 
+    public String getVideoTags() {
+        return videoTags;
+    }
 
+    public void setVideoTags(String videoTags) {
+        this.videoTags = videoTags;
+    }
 }

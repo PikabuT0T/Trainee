@@ -90,6 +90,7 @@ public class PlaylistActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter<Member, ViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Member, ViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int position, @NonNull Member member) {
+                Log.d("FirebaseRecycler", "Binding data for member: " + member.getVideoName());
                 viewHolder.bindData(member);
                 viewHolder.itemView.setOnClickListener(view -> viewModel.launchVideoPlayer(PlaylistActivity.this, member));
             }

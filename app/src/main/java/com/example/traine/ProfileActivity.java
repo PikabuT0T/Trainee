@@ -7,8 +7,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ProfileViewModel viewModel;
     private TextView nameView, emailView, phoneView;
     private ImageView imageView2;
-    private ImageButton buttonMain;
+    private ImageButton buttonMain, buttonLogout;
     private User currentUser;
 
     @Override
@@ -58,6 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
         phoneView = findViewById(R.id.phoneView);
         imageView2 = findViewById(R.id.imageView2);
         buttonMain = findViewById(R.id.buttonToMainActivity);
+        buttonLogout = findViewById(R.id.button_logout);
         Toolbar toolbar = findViewById(R.id.toolbar_profile);
         setSupportActionBar(toolbar);
 
@@ -130,6 +133,31 @@ public class ProfileActivity extends AppCompatActivity {
     private void setupListeners() {
         buttonMain.setOnClickListener(view -> goToActivity(MenuActivity.class));
         imageView2.setOnClickListener(view -> selectImage());
+        buttonLogout.setOnClickListener(view -> {
+            checkToken();
+            goToActivity(MainActivity.class);
+        });
+    }
+
+    private void deleteToken() {
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("AuthToken");
+        Log.d("Auth Token", "Token was deleted");
+        editor.apply();  // Или editor.commit() для синхронного удаления
+    }
+
+    private String getToken() {
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences("AppPrefs", getApplication().MODE_PRIVATE);
+        return sharedPreferences.getString("AuthToken", null);  // Дешифрование токена после получения
+    }
+    private void checkToken(){
+        String authToken = getToken();
+        if(authToken != null){
+            deleteToken();
+        } else {
+            Log.d("Auth Token Failure", "Token was not found");
+        }
     }
 
     private void selectImage() {

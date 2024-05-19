@@ -10,9 +10,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -38,6 +40,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UploadVideoActivity extends AppCompatActivity {
 
@@ -45,6 +49,7 @@ public class UploadVideoActivity extends AppCompatActivity {
     Bitmap thumbnail;
     VideoView videoView;
     ImageButton buttonMain;
+    private CheckBox checkBoxLegs, checkBoxArms, checkBoxAbs;
     TextView chooseVideoView, showVideoView, durationTime;
     ImageView videoImage;
     TextView buttonUpload;
@@ -74,6 +79,9 @@ public class UploadVideoActivity extends AppCompatActivity {
         showVideoView = findViewById(R.id.show_video_playlist);
         durationTime = findViewById(R.id.testShow);
         videoImage = findViewById(R.id.image_video);
+        checkBoxLegs = findViewById(R.id.checkBox_legs);
+        checkBoxArms = findViewById(R.id.checkBox_arms);
+        checkBoxAbs = findViewById(R.id.checkBox_abs);
         mediaController = new MediaController(this);
 
         member = new Member();
@@ -182,6 +190,15 @@ public class UploadVideoActivity extends AppCompatActivity {
 
     private void UploadVideo(){
         String videoName = editText.getText().toString();
+        List<String> tags = new ArrayList<>();
+
+        if (checkBoxArms.isChecked()) tags.add("arms");
+        if (checkBoxLegs.isChecked()) tags.add("legs");
+        if (checkBoxAbs.isChecked()) tags.add("abs");
+
+        String tagsString = String.join(",", tags);
+        Log.d("Search Exercises", tagsString);
+        member.setVideoTags(tagsString);
 
         if (videoUri != null || imageData != null){
             if(TextUtils.isEmpty(editText.getText().toString())){
@@ -234,6 +251,7 @@ public class UploadVideoActivity extends AppCompatActivity {
                         member.setVideoUri(downloadUri.toString());
                         member.getVideoDuration();
                         member.getVideoPreviewImage();
+                        member.getVideoTags();
                         String i = databaseReference.push().getKey();
                         databaseReference.child(i).setValue(member);
                     } else {
