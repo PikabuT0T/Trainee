@@ -19,12 +19,12 @@
             android:id="@+id/button_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_more" />
+            android:src="@drawable/baseline_edit" />
 
         <!-- Кнопка удаления -->
         <ImageButton
             android:id="@+id/button_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_upload_video" />
+            android:src="@drawable/ic_delete" />
 </LinearLayout>

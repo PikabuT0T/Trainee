@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -26,17 +27,21 @@ import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -64,6 +69,7 @@ public class UploadVideoActivity extends AppCompatActivity {
     Member member;
     UploadTask uploadTaskVideo, uploadTaskImage;
     byte[] imageData;
+    LayoutInflater inflater;
 
 
     @Override
@@ -83,6 +89,7 @@ public class UploadVideoActivity extends AppCompatActivity {
         checkBoxArms = findViewById(R.id.checkBox_arms);
         checkBoxAbs = findViewById(R.id.checkBox_abs);
         mediaController = new MediaController(this);
+        inflater = LayoutInflater.from(this);
 
         member = new Member();
         storage = FirebaseStorage.getInstance();
@@ -100,6 +107,9 @@ public class UploadVideoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+
 
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -136,9 +146,15 @@ public class UploadVideoActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.textView4).setOnClickListener(view -> showMusclesWindow());
     }
 
-
+    private void showMusclesWindow() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        View sign_in_window = inflater.inflate(R.layout.find_muscles_grupe_form, null);
+        dialog.setView(sign_in_window);
+        dialog.show();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

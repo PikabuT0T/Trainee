@@ -1,6 +1,7 @@
 package com.example.traine;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -37,7 +40,7 @@ public class CalendarActivity extends AppCompatActivity implements NoteAdapter.O
     private Map<String, List<Note>> notesMap;
     private NoteAdapter noteAdapter;
     private EditText editText;
-    private Button addNoteButton;
+    private TextView addNoteButton;
     private Calendar selectedDate;
     private List<EventDay> events;
     private NotesDatabaseHelper dbHelper;
@@ -53,14 +56,13 @@ public class CalendarActivity extends AppCompatActivity implements NoteAdapter.O
         recyclerView = findViewById(R.id.recyclerView);
         editText = findViewById(R.id.editText);
         addNoteButton = findViewById(R.id.btnAddNote);
-
         notesMap = new HashMap<>();
         noteAdapter = new NoteAdapter(new ArrayList<>(), this, this);
         events = new ArrayList<>();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(noteAdapter);
-
+        setupListeners();
         dbHelper = new NotesDatabaseHelper(this);
         //backupHelper = new BackupHelper(this);
 
@@ -100,6 +102,16 @@ public class CalendarActivity extends AppCompatActivity implements NoteAdapter.O
 
         loadNotesFromDatabase();
         updateSelectedDate();
+    }
+
+    private void setupListeners() {
+        ImageButton buttonToMainActivity = findViewById(R.id.buttonToMainActivity);
+        buttonToMainActivity.setOnClickListener(view -> goToActivity(MenuActivity.class));
+    }
+
+    private void goToActivity(Class<?> activityClass) {
+        Intent intent = new Intent(this, activityClass);
+        startActivity(intent);
     }
 
     private void loadNotesFromDatabase() {

@@ -7,10 +7,6 @@
         android:icon="@drawable/baseline_edit">
         <menu>
             <item
-                android:id="@+id/settings_email_change"
-                android:title="Змінити Е-mail"
-                app:showAsAction="never" />
-            <item
                 android:id="@+id/settings_name_change"
                 android:title="Змінити ім'я"
                 app:showAsAction="never" />

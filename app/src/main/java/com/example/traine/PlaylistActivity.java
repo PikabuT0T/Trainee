@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,16 +37,27 @@ public class PlaylistActivity extends AppCompatActivity {
 
     private CheckBox checkBoxLegs, checkBoxArms, checkBoxAbs;
     private Button buttonSearch, buttonMainVideo;
+    LayoutInflater inflater;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
+        inflater = LayoutInflater.from(this);
+
         initializeUI();
 
         viewModel = new ViewModelProvider(this).get(VideoViewModel.class);
-
+        findViewById(R.id.buttonToFilter).setOnClickListener(view -> showSortWindow());
         setupRecyclerView();
+    }
+
+    private void showSortWindow() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        View sign_in_window = inflater.inflate(R.layout.find_muscles_grupe_form, null);
+        dialog.setView(sign_in_window);
+        dialog.show();
     }
 
     private void initializeUI() {

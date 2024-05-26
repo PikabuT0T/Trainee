@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardElevation="10dp"
+    android:layout_margin="8dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Оберіть м'язові групи"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:paddingBottom="16dp"/>
+
+            <!-- Грудні м'язи -->
+            <TextView
+                android:id="@+id/textView_chest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Грудні м'язи"
+                android:textSize="16sp"
+                android:paddingBottom="8dp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_pectoralis_major"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Великий грудний м'яз"
+                android:textSize="16sp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_pectoralis_minor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Малий грудний м'яз"
+                android:textSize="16sp"/>
+
+            <!-- М'язи спини -->
+            <TextView
+                android:id="@+id/textView_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="М'язи спини"
+                android:textSize="16sp"
+                android:paddingBottom="8dp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_latissimus_dorsi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Широчайший м'яз спини"
+                android:textSize="16sp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_trapezius"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Трапецієподібний м'яз"
+                android:textSize="16sp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_rhomboids"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ромбовидні м'язи"
+                android:textSize="16sp"/>
+
+            <!-- Плечі -->
+            <TextView
+                android:id="@+id/textView_shoulders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Плечі"
+                android:textSize="16sp"
+                android:paddingBottom="8dp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_anterior_deltoid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Передній пучок дельтоподібного м'яза"
+                android:textSize="16sp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_lateral_deltoid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Бічний пучок дельтоподібного м'яза"
+                android:textSize="16sp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_posterior_deltoid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Задній пучок дельтоподібного м'яза"
+                android:textSize="16sp"/>
+
+            <!-- Руки -->
+            <TextView
+                android:id="@+id/textView_arms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Руки"
+                android:textSize="16sp"
+                android:paddingBottom="8dp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_biceps_brachii"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Двоголовий м'яз плеча (біцепс)"
+                android:textSize="16sp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_triceps_brachii"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Триголовий м'яз плеча (трицепс)"
+                android:textSize="16sp"/>
+
+            <!-- Ноги -->
+            <TextView
+                android:id="@+id/textView_legs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ноги"
+                android:textSize="16sp"
+                android:paddingBottom="8dp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_quadriceps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Чотириголовий м'яз стегна"
+                android:textSize="16sp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_hamstrings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="М'язи задньої поверхні стегна"
+                android:textSize="16sp"/>
+
+            <!-- М'язи живота -->
+            <TextView
+                android:id="@+id/textView_abs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="М'язи живота"
+                android:textSize="16sp"
+                android:paddingBottom="8dp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_rectus_abdominis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Прямий м'яз живота"
+                android:textSize="16sp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_external_obliques"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Зовнішні косі м'язи живота"
+                android:textSize="16sp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_internal_obliques"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Внутрішні косі м'язи живота"
+                android:textSize="16sp"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_transverse_abdominis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Поперечний м'яз живота"
+                android:textSize="16sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:paddingTop="20dp">
+                <Button
+                    android:id="@+id/button_apply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:text="Застосувати"/>
+
+                <Button
+                    android:id="@+id/button_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Назад"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.cardview.widget.CardView>
