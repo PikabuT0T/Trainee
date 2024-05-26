@@ -2,6 +2,7 @@ package com.example.traine;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -172,8 +173,17 @@ public class ProfileActivity extends AppCompatActivity {
             case "password":
                 updateTask = user.updatePassword(newValue);
                 break;
+            case "name":
+                updateTask = users.child("name").setValue(newValue);
+                nameView.setText(newValue);
+                currentUser.setName(newValue);
+            case "phone":
+                updateTask = users.child("phone").setValue(newValue);
+                phoneView.setText(newValue);
+                currentUser.setPhone(newValue);
             default:
                 updateTask = users.child(type).setValue(newValue);
+                //attachDatabaseReadListener();
                 break;
         }
 
@@ -186,11 +196,44 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            uploadImage(data.getData());
+            Toast.makeText(this, "Зображення успішно завантажене!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Error: Спробуйте завантажити інше зображення!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void uploadImage(Uri imageUri) {
+        storageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
+            storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                String newUri = uri.toString();
+                users.child("profileUri").setValue(newUri).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        currentUser.setProfileUri(newUri);
+                        updateUI(currentUser);
+                    } else {
+                        Log.e("ProfileActivity", "Failed to update profile URI");
+                    }
+                });
+            }).addOnFailureListener(e -> Log.e("ProfileActivity", "Failed to get download URL"));
+        }).addOnFailureListener(e -> Log.e("ProfileActivity", "Failed to upload image"));
+    }
+
     private void updateUI(User user) {
         nameView.setText(user.getName());
         emailView.setText(user.getEmail());
         phoneView.setText(user.getPhone());
-        Picasso.get().load(user.getProfileUri()).placeholder(R.drawable.ic_profile).into(imageView2);
+        if (user.getProfileUri() != null && !user.getProfileUri().isEmpty()) {
+            Picasso.get()
+                    .load(user.getProfileUri())
+                    .placeholder(R.drawable.ic_profile)
+                    .resize(150, 150)
+                    .into(imageView2);
+        }
     }
 
     private void attachDatabaseReadListener() {
@@ -307,5 +350,12 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         detachDatabaseReadListener();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        initCurrentUser();
     }
 }

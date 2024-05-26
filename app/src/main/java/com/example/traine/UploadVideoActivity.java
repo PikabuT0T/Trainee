@@ -55,6 +55,9 @@ public class UploadVideoActivity extends AppCompatActivity {
     VideoView videoView;
     ImageButton buttonMain;
     private CheckBox checkBoxLegs, checkBoxArms, checkBoxAbs;
+    private CheckBox pectoralis_major, pectoralis_minor, latissimus_dorsi, trapezius, rhomboids,
+            anterior_deltoid, lateral_deltoid, posterior_deltoid, biceps_brachii, triceps_brachii,
+            quadriceps, hamstrings, rectus_abdominis, external_obliques, internal_obliques, transverse_abdominis;
     TextView chooseVideoView, showVideoView, durationTime;
     ImageView videoImage;
     TextView buttonUpload;
@@ -85,9 +88,9 @@ public class UploadVideoActivity extends AppCompatActivity {
         showVideoView = findViewById(R.id.show_video_playlist);
         durationTime = findViewById(R.id.testShow);
         videoImage = findViewById(R.id.image_video);
-        checkBoxLegs = findViewById(R.id.checkBox_legs);
-        checkBoxArms = findViewById(R.id.checkBox_arms);
-        checkBoxAbs = findViewById(R.id.checkBox_abs);
+//        checkBoxLegs = findViewById(R.id.checkBox_legs);
+//        checkBoxArms = findViewById(R.id.checkBox_arms);
+//        checkBoxAbs = findViewById(R.id.checkBox_abs);
         mediaController = new MediaController(this);
         inflater = LayoutInflater.from(this);
 
@@ -152,6 +155,28 @@ public class UploadVideoActivity extends AppCompatActivity {
     private void showMusclesWindow() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         View sign_in_window = inflater.inflate(R.layout.find_muscles_grupe_form, null);
+
+        pectoralis_major = sign_in_window.findViewById(R.id.checkBox_pectoralis_major);
+        pectoralis_minor = sign_in_window.findViewById(R.id.checkBox_pectoralis_minor);
+        latissimus_dorsi = sign_in_window.findViewById(R.id.checkBox_latissimus_dorsi);
+        trapezius = sign_in_window.findViewById(R.id.checkBox_trapezius);
+        rhomboids = sign_in_window.findViewById(R.id.checkBox_rhomboids);
+        anterior_deltoid = sign_in_window.findViewById(R.id.checkBox_anterior_deltoid);
+        lateral_deltoid = sign_in_window.findViewById(R.id.checkBox_lateral_deltoid);
+        posterior_deltoid = sign_in_window.findViewById(R.id.checkBox_posterior_deltoid);
+        biceps_brachii = sign_in_window.findViewById(R.id.checkBox_biceps_brachii);
+        triceps_brachii = sign_in_window.findViewById(R.id.checkBox_triceps_brachii);
+        quadriceps = sign_in_window.findViewById(R.id.checkBox_quadriceps);
+        hamstrings = sign_in_window.findViewById(R.id.checkBox_hamstrings);
+        rectus_abdominis = sign_in_window.findViewById(R.id.checkBox_rectus_abdominis);
+        external_obliques = sign_in_window.findViewById(R.id.checkBox_external_obliques);
+        internal_obliques = sign_in_window.findViewById(R.id.checkBox_internal_obliques);
+        transverse_abdominis = sign_in_window.findViewById(R.id.checkBox_transverse_abdominis);
+
+        dialog.setView(sign_in_window);
+        dialog.setPositiveButton("Застосувати", (dialogInterface, i) -> UploadVideo());
+        dialog.setNegativeButton("Назад", (dialogInterface, i) -> dialogInterface.dismiss());
+
         dialog.setView(sign_in_window);
         dialog.show();
     }
@@ -208,9 +233,22 @@ public class UploadVideoActivity extends AppCompatActivity {
         String videoName = editText.getText().toString();
         List<String> tags = new ArrayList<>();
 
-        if (checkBoxArms.isChecked()) tags.add("arms");
-        if (checkBoxLegs.isChecked()) tags.add("legs");
-        if (checkBoxAbs.isChecked()) tags.add("abs");
+        if (pectoralis_major.isChecked()) tags.add("pectoralis_major");
+        if (pectoralis_minor.isChecked()) tags.add("pectoralis_minor");
+        if (latissimus_dorsi.isChecked()) tags.add("latissimus_dorsi");
+        if (trapezius.isChecked()) tags.add("trapezius");
+        if (rhomboids.isChecked()) tags.add("rhomboids");
+        if (anterior_deltoid.isChecked()) tags.add("anterior_deltoid");
+        if (lateral_deltoid.isChecked()) tags.add("lateral_deltoid");
+        if (posterior_deltoid.isChecked()) tags.add("posterior_deltoid");
+        if (biceps_brachii.isChecked()) tags.add("biceps_brachii");
+        if (triceps_brachii.isChecked()) tags.add("triceps_brachii");
+        if (quadriceps.isChecked()) tags.add("quadriceps");
+        if (hamstrings.isChecked()) tags.add("hamstrings");
+        if (rectus_abdominis.isChecked()) tags.add("rectus_abdominis");
+        if (external_obliques.isChecked()) tags.add("external_obliques");
+        if (internal_obliques.isChecked()) tags.add("internal_obliques");
+        if (transverse_abdominis.isChecked()) tags.add("transverse_abdominis");
 
         String tagsString = String.join(",", tags);
         Log.d("Search Exercises", tagsString);
