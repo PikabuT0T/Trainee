@@ -42,6 +42,7 @@ public class BackupHelper {
 
         if (database.exists()) {
             Uri file = Uri.fromFile(database);
+            Log.d("Firebase", "Path to db"+"backups/" + user.getUid() + "/notes.db");
             StorageReference databaseRef = storageReference.child("backups/" + user.getUid() + "/notes.db");
 
             databaseRef.putFile(file)

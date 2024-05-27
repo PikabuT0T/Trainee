@@ -35,13 +35,11 @@ public class PlaylistActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ImageButton buttonMain, buttonToUploadVideo;
 
-    private CheckBox checkBoxLegs, checkBoxArms, checkBoxAbs;
     private CheckBox pectoralis_major, pectoralis_minor, latissimus_dorsi, trapezius, rhomboids,
             anterior_deltoid, lateral_deltoid, posterior_deltoid, biceps_brachii, triceps_brachii,
             quadriceps, hamstrings, rectus_abdominis, external_obliques, internal_obliques, transverse_abdominis;
 
     private Button buttonSearch, buttonMainVideo;
-    View sign_in_window;
     LayoutInflater inflater;
 
 

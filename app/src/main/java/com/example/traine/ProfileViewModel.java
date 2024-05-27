@@ -4,130 +4,89 @@ import android.content.Context;
 import android.net.Uri;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import Models.User;
 
 public class ProfileViewModel extends ViewModel {
-    private MutableLiveData<User> user = new MutableLiveData<>();
-    private UserModel userModel;
+    private UserRepository userRepository;
+    private MutableLiveData<User> userLiveData;
 
     public ProfileViewModel() {
-        userModel = new UserModel();
-        attachDatabaseReadListener();
+        userRepository = new UserRepository();
+        userLiveData = new MutableLiveData<>();
+        loadUser();
     }
 
     public LiveData<User> getUser() {
-        return user;
+        return userLiveData;
     }
 
-    public void updateUser(User updatedUser) {
-        userModel.updateUser(updatedUser, new UserModel.UserDataListener() {
-            @Override
-            public void onDataLoaded(User user) {
-                ProfileViewModel.this.user.setValue(user);
-            }
-
-            @Override
-            public void onDataUpdated(String profileUri) {
-                User currentUser = ProfileViewModel.this.user.getValue();
-                if (currentUser != null) {
-                    currentUser.setProfileUri(profileUri);
-                    ProfileViewModel.this.user.setValue(currentUser);
-                }
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                // Обработка ошибок
+    public void updateUserInformation(String type, String newValue, String currentPassword) {
+        userRepository.updateUserInformation(type, newValue, currentPassword, task -> {
+            if (task.isSuccessful()) {
+                loadUser(); // Refresh user data
             }
         });
     }
 
     public void uploadImage(Uri imageUri) {
-        userModel.uploadImage(imageUri, new UserModel.UserDataListener() {
-            @Override
-            public void onDataLoaded(User user) {
-                ProfileViewModel.this.user.setValue(user);
-            }
-
-            @Override
-            public void onDataUpdated(String profileUri) {
-                User currentUser = ProfileViewModel.this.user.getValue();
-                if (currentUser != null) {
-                    currentUser.setProfileUri(profileUri);
-                    ProfileViewModel.this.user.setValue(currentUser);
-                }
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                // Обработка ошибок загрузки изображения
+        userRepository.uploadImage(imageUri, task -> {
+            if (task.isSuccessful()) {
+                loadUser(); // Refresh user data
             }
         });
     }
 
-    private void attachDatabaseReadListener() {
-        userModel.attachDatabaseReadListener(new UserModel.UserDataListener() {
-            @Override
-            public void onDataLoaded(User user) {
-                ProfileViewModel.this.user.setValue(user);
-            }
+    public void setUser(User user) {
+        userLiveData.setValue(user);
+    }
 
-            @Override
-            public void onDataUpdated(String profileUri) {
-                User currentUser = ProfileViewModel.this.user.getValue();
-                if (currentUser != null) {
-                    currentUser.setProfileUri(profileUri);
-                    ProfileViewModel.this.user.setValue(currentUser);
-                }
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                // Обработка ошибок
+    private void loadUser() {
+        userRepository.getUser().observeForever(user -> {
+            if (user != null) {
+                userLiveData.setValue(user);
             }
         });
     }
 
-    @Override
-    protected void onCleared() {
-        userModel.detachDatabaseReadListener();
-        super.onCleared();
+    public void detachListener() {
+        userRepository.detachListener();
     }
 }
 
+
+
+
+
+
+
+
+
+
+
 //public class ProfileViewModel extends ViewModel {
-//    private Context context;
-//    public static final int PICK_IMAGE = 1;
-//    private UserModel userModel;
 //    private MutableLiveData<User> user = new MutableLiveData<>();
+//    private UserModel userModel;
 //
 //    public ProfileViewModel() {
 //        userModel = new UserModel();
-//        userModel.attachDatabaseReadListener(new UserModel.UserDataListener() {
-//            @Override
-//            public void onDataLoaded(User user) {
-//                ProfileViewModel.this.user.setValue(user);
-//            }
-//            @Override
-//            public void onDataUpdated(String profileUri) {
-//                User currentUser = user.getValue();
-//                if (currentUser != null) {
-//                    currentUser.setProfileUri(profileUri);
-//                    user.setValue(currentUser); // Обновляем LiveData, что в свою очередь обновит UI
-//                }
-//            }
-//            @Override
-//            public void onError(String errorMessage) {
-//                // Обработка ошибок, например, через LiveData для ошибок
-//                Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show();
-//            }
-//        });
+//        attachDatabaseReadListener();
 //    }
 //
 //    public LiveData<User> getUser() {
@@ -143,10 +102,10 @@ public class ProfileViewModel extends ViewModel {
 //
 //            @Override
 //            public void onDataUpdated(String profileUri) {
-//                User currentUser = user.getValue();
+//                User currentUser = ProfileViewModel.this.user.getValue();
 //                if (currentUser != null) {
 //                    currentUser.setProfileUri(profileUri);
-//                    user.setValue(currentUser); // Обновляем LiveData, что в свою очередь обновит UI
+//                    ProfileViewModel.this.user.setValue(currentUser);
 //                }
 //            }
 //
@@ -156,20 +115,23 @@ public class ProfileViewModel extends ViewModel {
 //            }
 //        });
 //    }
+//
 //    public void uploadImage(Uri imageUri) {
 //        userModel.uploadImage(imageUri, new UserModel.UserDataListener() {
 //            @Override
 //            public void onDataLoaded(User user) {
 //                ProfileViewModel.this.user.setValue(user);
 //            }
+//
 //            @Override
 //            public void onDataUpdated(String profileUri) {
-//                User currentUser = user.getValue();
+//                User currentUser = ProfileViewModel.this.user.getValue();
 //                if (currentUser != null) {
 //                    currentUser.setProfileUri(profileUri);
-//                    user.setValue(currentUser); // Обновляем LiveData, что в свою очередь обновит UI
+//                    ProfileViewModel.this.user.setValue(currentUser);
 //                }
 //            }
+//
 //            @Override
 //            public void onError(String errorMessage) {
 //                // Обработка ошибок загрузки изображения
@@ -177,77 +139,25 @@ public class ProfileViewModel extends ViewModel {
 //        });
 //    }
 //
-//    @Override
-//    protected void onCleared() {
-//        userModel.detachDatabaseReadListener(); // Отсоединяем слушателя при уничтожении ViewModel
-//    }
-//
-//
-//}
-
-
-//public class ProfileViewModel extends ViewModel {
-//    public static final int PICK_IMAGE = 1;
-//    private MutableLiveData<User> userLiveData = new MutableLiveData<>();
-//    private UserModel userModel;
-//
-//    public ProfileViewModel() {
-//        userModel = new UserModel();
-//    }
-//
-//    public void initFirebase() {
-//        userModel.initFirebase();
+//    private void attachDatabaseReadListener() {
 //        userModel.attachDatabaseReadListener(new UserModel.UserDataListener() {
 //            @Override
 //            public void onDataLoaded(User user) {
-//                userLiveData.setValue(user);
+//                ProfileViewModel.this.user.setValue(user);
 //            }
 //
 //            @Override
 //            public void onDataUpdated(String profileUri) {
-//                // Оновити URI зображення
-//                User currentUser = userLiveData.getValue();
+//                User currentUser = ProfileViewModel.this.user.getValue();
 //                if (currentUser != null) {
 //                    currentUser.setProfileUri(profileUri);
-//                    userLiveData.setValue(currentUser);
+//                    ProfileViewModel.this.user.setValue(currentUser);
 //                }
 //            }
 //
 //            @Override
 //            public void onError(String errorMessage) {
-//                // Обробка помилок
-//            }
-//        });
-//    }
-//
-//    public LiveData<User> getUser() {
-//        return userLiveData;
-//    }
-//
-//    public LiveData<User> setUser(User user){
-//        userLiveData.setValue(user);
-//        return userLiveData;
-//    }
-//
-//    public void uploadImage(Uri imageUri) {
-//        userModel.uploadImage(imageUri, new UserModel.UserDataListener() {
-//            @Override
-//            public void onDataLoaded(User user) {
-//                userLiveData.setValue(user);
-//            }
-//
-//            @Override
-//            public void onDataUpdated(String profileUri) {
-//                User currentUser = userLiveData.getValue();
-//                if (currentUser != null) {
-//                    currentUser.setProfileUri(profileUri);
-//                    userLiveData.setValue(currentUser);
-//                }
-//            }
-//
-//            @Override
-//            public void onError(String errorMessage) {
-//                // Handle errors
+//                // Обработка ошибок
 //            }
 //        });
 //    }
@@ -255,72 +165,7 @@ public class ProfileViewModel extends ViewModel {
 //    @Override
 //    protected void onCleared() {
 //        userModel.detachDatabaseReadListener();
+//        super.onCleared();
 //    }
 //}
 
-//public class ProfileViewModel extends ViewModel {
-//    private Context context;
-//    public static final int PICK_IMAGE = 1;
-//    private UserModel userModel;
-//    private MutableLiveData<User> user = new MutableLiveData<>();
-//    private MutableLiveData<User> userLiveData = new MutableLiveData<>();
-//
-//    public ProfileViewModel() {
-//        userModel = new UserModel();
-//        userModel.attachDatabaseReadListener(new UserModel.UserDataListener() {
-//            @Override
-//            public void onDataLoaded(User user) {
-//                ProfileViewModel.this.user.setValue(user);
-//            }
-//            @Override
-//            public void onDataUpdated(String profileUri) {
-//                User currentUser = user.getValue();
-//                if (currentUser != null) {
-//                    currentUser.setProfileUri(profileUri);
-//                    user.setValue(currentUser); // Обновляем LiveData, что в свою очередь обновит UI
-//                }
-//            }
-//            @Override
-//            public void onError(String errorMessage) {
-//                // Обработка ошибок, например, через LiveData для ошибок
-//                Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
-//
-//    public LiveData<User> getUser() {
-//        return user;
-//    }
-//
-//    public LiveData<User> setUser(User user){
-//        userLiveData.setValue(user);
-//        return userLiveData;
-//    }
-//    public void uploadImage(Uri imageUri) {
-//        userModel.uploadImage(imageUri, new UserModel.UserDataListener() {
-//            @Override
-//            public void onDataLoaded(User user) {
-//                ProfileViewModel.this.user.setValue(user);
-//            }
-//            @Override
-//            public void onDataUpdated(String profileUri) {
-//                User currentUser = user.getValue();
-//                if (currentUser != null) {
-//                    currentUser.setProfileUri(profileUri);
-//                    user.setValue(currentUser); // Обновляем LiveData, что в свою очередь обновит UI
-//                }
-//            }
-//            @Override
-//            public void onError(String errorMessage) {
-//                // Обработка ошибок загрузки изображения
-//            }
-//        });
-//    }
-//
-//    @Override
-//    protected void onCleared() {
-//        userModel.detachDatabaseReadListener(); // Отсоединяем слушателя при уничтожении ViewModel
-//    }
-//
-//
-//}

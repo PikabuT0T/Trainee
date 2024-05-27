@@ -106,7 +106,10 @@ public class CalendarActivity extends AppCompatActivity implements NoteAdapter.O
 
     private void setupListeners() {
         ImageButton buttonToMainActivity = findViewById(R.id.buttonToMainActivity);
-        buttonToMainActivity.setOnClickListener(view -> goToActivity(MenuActivity.class));
+        buttonToMainActivity.setOnClickListener(view -> {
+            backupHelper.backupDatabaseToFirebase();
+            goToActivity(MenuActivity.class);
+        });
     }
 
     private void goToActivity(Class<?> activityClass) {
@@ -262,9 +265,17 @@ public class CalendarActivity extends AppCompatActivity implements NoteAdapter.O
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        currentUser = getIntent().getParcelableExtra("userDetails");
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         backupHelper.backupDatabaseToFirebase();
+
     }
 }
 

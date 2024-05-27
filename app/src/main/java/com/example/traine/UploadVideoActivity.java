@@ -49,7 +49,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UploadVideoActivity extends AppCompatActivity {
-
     private static final int PICK_VIDEO = 1;
     Bitmap thumbnail;
     VideoView videoView;
